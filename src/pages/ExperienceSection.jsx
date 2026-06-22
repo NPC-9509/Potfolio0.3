@@ -11,7 +11,7 @@ export default function ExperienceSection({ experience }) {
         </div>
         <div className="experience-comic-grid grid grid-cols-[1.1fr_1fr] gap-10 h-[calc(100%-70px)]">
           <div className="comic-panel artwork-panel pane-left rounded-xl bg-cover bg-center transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5"
-            style={{ backgroundImage: "url('/src/assets/comic_experience.png')" }}>
+            style={{ backgroundImage: "url('assets/comic_experience.png')" }}>
             <div className="panel-border-glow absolute top-0 left-0 w-full h-full border-2 border-transparent pointer-events-none z-[5] transition-all duration-300" />
             <div className="panel-overlay-grad absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[rgba(4,1,10,0.85)] to-[rgba(4,1,10,0.1)] pointer-events-none z-[2]" />
             <div className="speech-bubble bottom-left absolute bottom-8 left-8 bg-[rgba(12,4,28,0.7)] backdrop-blur-md text-white border border-white/10 px-5 py-4 rounded-xl font-sans text-sm leading-relaxed font-semibold max-w-[260px] z-[6] shadow-lg" role="note">

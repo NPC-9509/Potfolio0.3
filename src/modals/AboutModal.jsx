@@ -28,7 +28,7 @@ export default function AboutModal({ portfolio }) {
             </div>
             <div className="modal-right-col-flex flex flex-col gap-3 h-full">
               <div className="modal-comic-panel artwork-block-panel relative flex-1 overflow-hidden border-2 border-black rounded-xl">
-                <img src={portfolio?.profile_image || '/src/assets/profile.png'} alt="Mukul Vyas profile photo" className="w-full h-full object-cover object-[center_10%] block" loading="lazy" />
+                <img src={portfolio?.profile_image || 'assets/profile.png'} alt="Mukul Vyas profile photo" className="w-full h-full object-cover object-[center_10%] block" loading="lazy" />
               </div>
               <div className="caption-box bg-pink relative w-full border border-black"
                 style={{background: 'rgba(255, 42, 133, 0.15)', boxShadow: '4px 4px 0 #000', margin: '0', maxWidth: 'none'}}>

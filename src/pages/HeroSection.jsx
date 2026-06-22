@@ -46,7 +46,7 @@ export default function HeroSection({ portfolio }) {
           </div>
 
           <div className="comic-panel artwork-panel pane-right rounded-xl bg-cover bg-center transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5"
-            style={{ backgroundImage: "url('/src/assets/comic_hero.png')", borderColor: 'rgba(0, 229, 255, 0.3)', boxShadow: '0 8px 32px 0 rgba(4, 1, 10, 0.37), 0 0 15px rgba(0, 229, 255, 0.1)' }}>
+            style={{ backgroundImage: "url('assets/comic_hero.png')", borderColor: 'rgba(0, 229, 255, 0.3)', boxShadow: '0 8px 32px 0 rgba(4, 1, 10, 0.37), 0 0 15px rgba(0, 229, 255, 0.1)' }}>
             <div className="panel-border-glow absolute top-0 left-0 w-full h-full border-2 border-transparent pointer-events-none z-[5] transition-all duration-300" />
             <div className="panel-overlay-grad absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[rgba(4,1,10,0.85)] to-[rgba(4,1,10,0.1)] pointer-events-none z-[2]" />
             <div className="speech-bubble bottom-left absolute bottom-8 left-8 bg-[rgba(12,4,28,0.7)] backdrop-blur-md text-white border border-white/10 px-5 py-4 rounded-xl font-sans text-sm leading-relaxed font-semibold max-w-[260px] z-[6] shadow-lg"

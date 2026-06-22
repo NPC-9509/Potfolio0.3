@@ -36,7 +36,7 @@ export default function ProjectsSection({ projects }) {
             </div>
           </div>
           <div className="comic-panel artwork-panel pane-right rounded-xl bg-cover bg-center transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5"
-            style={{ backgroundImage: "url('/src/assets/comic_projects.png')" }}>
+            style={{ backgroundImage: "url('assets/comic_projects.png')" }}>
             <div className="panel-border-glow absolute top-0 left-0 w-full h-full border-2 border-transparent pointer-events-none z-[5] transition-all duration-300" />
             <div className="panel-overlay-grad absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[rgba(4,1,10,0.85)] to-[rgba(4,1,10,0.1)] pointer-events-none z-[2]" />
             <div className="caption-box top-right absolute top-5 right-5 bg-accent-purple/15 backdrop-blur-md border border-accent-purple/35 px-5 py-3 z-[6] max-w-[280px] shadow-lg rounded-lg">

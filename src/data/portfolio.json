@@ -21,11 +21,11 @@
     { "id": "link-phone",    "label": "Phone",    "url": "tel:+919509006795", "external": false }
   ],
   "resume": "/resume.pdf",
-  "profile_image": "/src/assets/profile.png",
+  "profile_image": "assets/profile.png",
   "seo": {
     "title": "MUKUL VYAS | Cyberpunk Interactive Comic Portfolio",
     "description": "Immersive cyberpunk interactive comic-book portfolio of Mukul Vyas — Digital Solutions Specialist: Software Developer, Creative Designer & Social Media Marketer.",
-    "og_image": "/src/assets/profile.png",
+    "og_image": "assets/profile.png",
     "canonical": "https://mukulvyas.dev/"
   }
 }

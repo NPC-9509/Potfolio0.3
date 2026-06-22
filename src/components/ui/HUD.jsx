@@ -89,7 +89,7 @@ export default function HUD() {
         aria-label="Scroll to top"
         title="RTR 200 Speed Logo"
       >
-        <img src="/src/assets/comic_bike.png" alt="RTR 200 Logo" className="w-full h-full object-cover object-center" loading="lazy" />
+        <img src="assets/comic_bike.png" alt="RTR 200 Logo" className="w-full h-full object-cover object-center" loading="lazy" />
         <div className="absolute bottom-0 right-0 bg-accent-cyan text-black font-mono text-[0.55rem] font-black px-1 border-l border-t border-white/10" aria-hidden="true">RTR</div>
       </div>
 

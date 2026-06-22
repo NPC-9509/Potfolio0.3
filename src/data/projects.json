@@ -16,7 +16,7 @@
       { "label": "Google Analytics", "color": "cyan" },
       { "label": "Site Management", "color": "cyan" }
     ],
-    "artwork": "/src/assets/university_artwork.png",
+    "artwork": "assets/university_artwork.png",
     "liveUrl": null,
     "sourceUrl": null,
     "accent": "cyan"
@@ -39,7 +39,7 @@
       { "label": "CSS3", "color": "pink" },
       { "label": "Responsive Design", "color": "pink" }
     ],
-    "artwork": "/src/assets/project_laptop.jpg",
+    "artwork": "assets/project_laptop.jpg",
     "liveUrl": null,
     "sourceUrl": "https://github.com/NPC-9509",
     "accent": "pink"
@@ -61,7 +61,7 @@
       { "label": "Canva Design", "color": "purple" },
       { "label": "Campaign Analytics", "color": "purple" }
     ],
-    "artwork": "/src/assets/project_phone.jpg",
+    "artwork": "assets/project_phone.jpg",
     "liveUrl": null,
     "sourceUrl": null,
     "accent": "purple"
