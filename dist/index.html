@@ -4,137 +4,169 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/assets/comic_bike-DEwQVyr6.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Optimization -->
+
+    <!-- SEO -->
     <title>MUKUL VYAS | Cyberpunk Interactive Comic Portfolio</title>
-    <meta name="description" content="Immersive cyberpunk interactive comic-book portfolio of Mukul Vyas — Digital Solutions Specialist: Software Developer, Creative Designer & Social Media Marketer." />
-    <meta property="og:title" content="MUKUL VYAS | Cyberpunk Interactive Comic Portfolio" />
-    <meta property="og:description" content="Immersive cyberpunk interactive comic-book portfolio of Mukul Vyas — Digital Solutions Specialist: Software Developer, Creative Designer & Social Media Marketer." />
-    <meta property="og:type" content="website" />
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-Dp7ZP1Xp.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CbCS_LfF.css">
+    <meta name="description" content="Immersive cyberpunk interactive comic-book portfolio of Mukul Vyas — Digital Solutions Specialist: Software Developer, Creative Designer &amp; Social Media Marketer." />
+    <link rel="canonical" href="https://mukulvyas.dev/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title"       content="MUKUL VYAS | Cyberpunk Interactive Comic Portfolio" />
+    <meta property="og:description" content="Immersive cyberpunk interactive comic-book portfolio of Mukul Vyas — Digital Solutions Specialist: Software Developer, Creative Designer &amp; Social Media Marketer." />
+    <meta property="og:type"        content="website" />
+    <meta property="og:image"       content="/assets/profile-BvMH3Bf-.png" />
+    <meta property="og:url"         content="https://mukulvyas.dev/" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="MUKUL VYAS | Cyberpunk Interactive Comic Portfolio" />
+    <meta name="twitter:description" content="Immersive cyberpunk interactive comic-book portfolio. Software Developer, Creative Designer &amp; Social Media Marketer." />
+    <meta name="twitter:image"       content="/assets/profile-BvMH3Bf-.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+    <script type="module" crossorigin src="/assets/index-B-I2bQro.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-gsap-DEKrlmLQ.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-three-C9jUWf6M.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BDYvupb9.css">
   </head>
   <body>
-    <!-- Interactive Comic Scanline Overlay & Screen Glitch -->
-    <div class="scanlines"></div>
-    <div class="noise-overlay"></div>
 
-    <!-- Custom Interactive Cyber-Cursor -->
-    <div id="custom-cursor"></div>
-    <div id="custom-cursor-follower"></div>
+    <!-- Skip Navigation (Accessibility) -->
+    <a class="skip-nav" href="#scroll-container">Skip to main content</a>
+    <button id="photo-mode-exit-btn" class="comic-btn-premium" style="position:fixed;top:1rem;right:1rem;z-index:99999;display:none;" aria-label="Exit Photo Mode">[ EXIT PHOTO MODE ]</button>
 
-    <!-- Immersive Comic Preloader / Boot Sequence -->
-    <div id="preloader">
-      <div class="boot-terminal" id="boot-terminal-log">
+    <!-- CRT Scanline + Noise Overlays -->
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" aria-hidden="true"></div>
+    <div id="custom-cursor-follower" aria-hidden="true"></div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- PRELOADER / BOOT SEQUENCE       -->
+    <!-- ════════════════════════════════ -->
+    <div id="preloader" role="status" aria-label="Loading portfolio">
+      <div class="boot-terminal" id="boot-terminal-log" aria-live="polite">
         <p class="term-line green">[OK] CORE SYSTEMS INITIATED</p>
         <p class="term-line purple">[SYNC] COMM LINK ESTABLISHED</p>
         <p class="term-line cyan">[SYS] LOADING GRAPHIC CHRONICLES...</p>
         <p class="term-line pink">[SYS] RTR_200 DRIVE_CORE ACTIVE</p>
       </div>
       <div class="loader-circle-container">
-        <svg class="loader-circle-svg" viewBox="0 0 100 100">
+        <svg class="loader-circle-svg" viewBox="0 0 100 100" aria-hidden="true">
           <circle class="loader-circle-bg" cx="50" cy="50" r="40" />
           <circle class="loader-circle-progress" id="progress-circle" cx="50" cy="50" r="40" />
         </svg>
         <span class="loader-percentage" id="loader-percentage-text">0%</span>
       </div>
       <div class="loader-quote-container">
-        <h1 class="loader-logo">MUKUL VYAS</h1>
+        <p class="loader-logo">MUKUL VYAS</p>
         <p class="loader-sub">MV // RTR_200 SPEED PROTOCOL</p>
       </div>
     </div>
 
-    <!-- WebGL Background Canvas (Cyber Grid & Starfield) -->
-    <div id="canvas-container">
-      <div id="canvas-3d" style="width: 100%; height: 100%;"></div>
+    <!-- WebGL Background Canvas -->
+    <div id="canvas-container" aria-hidden="true">
+      <div id="canvas-3d" style="width:100%;height:100%;"></div>
     </div>
 
-    <!-- Left HUD Timeline Navigation -->
-    <div id="hud-navigation">
-      <div class="hud-brand-logo-frame" title="RTR 200 Speed Logo">
-        <img src="/assets/comic_bike-DEwQVyr6.png" alt="RTR 200 Logo" class="hud-bike-logo-img" />
-        <div class="hud-logo-badge">RTR</div>
+    <!-- ════════════════════════════════ -->
+    <!-- LEFT HUD NAVIGATION             -->
+    <!-- ════════════════════════════════ -->
+    <nav id="hud-navigation" aria-label="Section navigation">
+      <div class="hud-brand-logo-frame" title="RTR 200 Speed Logo" tabindex="0" role="button" aria-label="Scroll to top">
+        <img src="/assets/comic_bike-DEwQVyr6.png" alt="RTR 200 Logo" class="hud-bike-logo-img" loading="lazy" />
+        <div class="hud-logo-badge" aria-hidden="true">RTR</div>
       </div>
-      <div class="hud-dot-container active" data-target="0" id="hud-sec-0">
-        <div class="hud-dot"></div>
+      <div class="hud-dot-container active" data-target="0" id="hud-sec-0" tabindex="0" role="button" aria-label="Go to Section I: Origin">
+        <div class="hud-dot" aria-hidden="true"></div>
         <span class="hud-label">I. Origin</span>
       </div>
-      <div class="hud-dot-container" data-target="1" id="hud-sec-1">
-        <div class="hud-dot"></div>
+      <div class="hud-dot-container" data-target="1" id="hud-sec-1" tabindex="0" role="button" aria-label="Go to Section II: Profile">
+        <div class="hud-dot" aria-hidden="true"></div>
         <span class="hud-label">II. Profile</span>
       </div>
-      <div class="hud-dot-container" data-target="2" id="hud-sec-2">
-        <div class="hud-dot"></div>
+      <div class="hud-dot-container" data-target="2" id="hud-sec-2" tabindex="0" role="button" aria-label="Go to Section III: Arsenal">
+        <div class="hud-dot" aria-hidden="true"></div>
         <span class="hud-label">III. Arsenal</span>
       </div>
-      <div class="hud-dot-container" data-target="3" id="hud-sec-3">
-        <div class="hud-dot"></div>
+      <div class="hud-dot-container" data-target="3" id="hud-sec-3" tabindex="0" role="button" aria-label="Go to Section IV: Missions">
+        <div class="hud-dot" aria-hidden="true"></div>
         <span class="hud-label">IV. Missions</span>
       </div>
-      <div class="hud-dot-container" data-target="4" id="hud-sec-4">
-        <div class="hud-dot"></div>
+      <div class="hud-dot-container" data-target="4" id="hud-sec-4" tabindex="0" role="button" aria-label="Go to Section V: Chronicle">
+        <div class="hud-dot" aria-hidden="true"></div>
         <span class="hud-label">V. Chronicle</span>
       </div>
-      <div class="hud-dot-container" data-target="5" id="hud-sec-5">
-        <div class="hud-dot"></div>
+      <div class="hud-dot-container" data-target="5" id="hud-sec-5" tabindex="0" role="button" aria-label="Go to Section VI: Transmission">
+        <div class="hud-dot" aria-hidden="true"></div>
         <span class="hud-label">VI. Transmission</span>
       </div>
-    </div>
+    </nav>
 
-    <!-- Audio Control Widget -->
-    <div id="audio-control-widget">
-      <div class="audio-waves-icon">
+    <!-- ════════════════════════════════ -->
+    <!-- AUDIO CONTROL WIDGET            -->
+    <!-- ════════════════════════════════ -->
+    <div id="audio-control-widget" role="button" tabindex="0" aria-label="Toggle sound" aria-pressed="false">
+      <div class="audio-waves-icon" aria-hidden="true">
         <div class="audio-wave-bar"></div>
         <div class="audio-wave-bar"></div>
         <div class="audio-wave-bar"></div>
         <div class="audio-wave-bar"></div>
       </div>
       <span class="audio-status-text" id="audio-text">Sound Off</span>
+      <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.05" value="0.7" aria-label="Volume" title="Volume" />
     </div>
 
-    <!-- Scrollable Comic Layer -->
-    <div id="scroll-container">
-      
-      <!-- CHAPTER 0: THE RUNTIME BOOT (HERO) -->
-      <section class="comic-chapter hero-chapter" id="sec-0">
+    <!-- ════════════════════════════════ -->
+    <!-- TERMINAL OPEN & SETTINGS HUD BUTTONS -->
+    <!-- ════════════════════════════════ -->
+    <div class="hud-action-buttons-group">
+      <button id="terminal-open-btn" class="terminal-hud-btn" aria-label="Open developer terminal" title="Open Terminal [Ctrl+`]">
+        <span aria-hidden="true">&gt;_</span>
+      </button>
+      <button id="settings-open-btn" class="settings-hud-btn" aria-label="Open settings panel" title="Open Settings Panel">
+        <span aria-hidden="true">⚙</span>
+      </button>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- SCROLLABLE COMIC LAYER          -->
+    <!-- ════════════════════════════════ -->
+    <main id="scroll-container">
+
+      <!-- CHAPTER 0: HERO ─────────────────── -->
+      <section class="comic-chapter hero-chapter" id="sec-0" aria-label="Hero — Introduction">
         <div class="comic-page">
-          <!-- Sound FX badge -->
-          <div class="sound-fx glitch-text" data-text="BOOOT!">&lt;BOOOT!&gt;</div>
-          
           <div class="hero-comic-grid">
-            <!-- Left panel: Neon Display -->
+            <!-- Left panel -->
             <div class="comic-panel display-panel pane-left">
-              <div class="panel-border-glow"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
               <div class="panel-content">
                 <span class="panel-tag">// PROTOCOL: WELCOME</span>
                 <h1 class="comic-main-title">MUKUL VYAS</h1>
                 <p class="comic-subtitle">DIGITAL SOLUTIONS SPECIALIST</p>
                 <p class="comic-role-desc">Software Development | Creative Design | Social Media Marketing</p>
-                
-                <div class="hero-channel-links">
-                  <a href="https://www.linkedin.com/in/mukul-vyas-hey/" target="_blank" rel="noopener noreferrer" class="channel-link-btn" id="link-linkedin">LinkedIn</a>
-                  <a href="https://github.com/NPC-9509" target="_blank" rel="noopener noreferrer" class="channel-link-btn" id="link-github">GitHub</a>
-                  <a href="https://www.instagram.com/_mukul_vyas_/" target="_blank" rel="noopener noreferrer" class="channel-link-btn" id="link-instagram">Instagram</a>
-                  <a href="mailto:mollyvyas@gmail.com" class="channel-link-btn" id="link-email">Email</a>
-                  <a href="tel:+919509006795" class="channel-link-btn" id="link-phone">Phone</a>
+                <div class="hero-channel-links" id="hero-social-links">
+                  <!-- Populated by JS -->
                 </div>
               </div>
             </div>
 
-            <!-- Right panel: Cinematic Landscape Artwork -->
+            <!-- Right panel -->
             <div class="comic-panel artwork-panel pane-right" style="background-image: url('/assets/comic_hero-BcaiDMNF.png');">
-              <div class="panel-border-glow"></div>
-              <div class="panel-overlay-grad"></div>
-              <!-- Dialogue bubble -->
-              <div class="speech-bubble bottom-left">
+              <div class="panel-border-glow" aria-hidden="true"></div>
+              <div class="panel-overlay-grad" aria-hidden="true"></div>
+              <div class="speech-bubble bottom-left" role="note">
                 <span class="bubble-speaker">SYSTEM_AI</span>
                 <p class="bubble-text">"Grid matrix loaded. Agent path verified. Commencing walkthrough."</p>
               </div>
-              <div class="scroll-prompt">
+              <div class="scroll-prompt" aria-hidden="true">
                 <span>SCROLL DOWN TO ENTER STORY</span>
                 <div class="scroll-arrow-line"></div>
               </div>
@@ -143,44 +175,33 @@
         </div>
       </section>
 
-      <!-- CHAPTER 1: THE ORIGIN PROTOCOL (ABOUT) -->
-      <section class="comic-chapter" id="sec-1">
+      <!-- CHAPTER 1: ABOUT ────────────────── -->
+      <section class="comic-chapter" id="sec-1" aria-label="Chapter 1 — Origin Protocol">
         <div class="comic-page">
           <div class="chapter-header">
             <span class="chapter-index">CHAPTER 01 //</span>
             <h2 class="chapter-title">ORIGIN PROTOCOL</h2>
           </div>
-
-          <div class="sound-fx pop-effect" style="top: 15%; left: 45%; font-size: 1.8rem; transform: rotate(-5deg); color: var(--accent-light);">&lt;REVEAL!&gt;</div>
-
           <div class="about-comic-grid">
-            <!-- Left panel: Character File -->
             <div class="comic-panel artwork-panel pane-left" style="background-image: url('/assets/comic_origin-iIzcgXbI.png');">
-              <div class="panel-border-glow"></div>
-              <div class="panel-overlay-grad"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
+              <div class="panel-overlay-grad" aria-hidden="true"></div>
               <div class="caption-box top-left bg-purple">
                 <p class="caption-title">FILE: MUKUL_VYAS.log</p>
                 <p class="caption-body">Half-shadow, half-neon-glow. Reflecting code in his glasses, determined to solve real-world problems.</p>
               </div>
             </div>
-
-            <!-- Right panel: Biography Summary -->
             <div class="comic-panel text-panel pane-right">
-              <div class="panel-border-glow"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
               <div class="panel-content flex-column-between">
                 <div>
                   <h3 class="panel-heading">Who is <span>Mukul?</span></h3>
-                  <p class="panel-paragraph">
-                    I am a versatile Digital Solutions Specialist. My work combines technical computer science excellence with creative thinking to build highly impactful digital experiences.
-                  </p>
-                  <p class="panel-paragraph">
-                    From frontend web systems to custom social marketing campaigns, I help businesses grow and establish an authoritative, premium online presence.
-                  </p>
+                  <p class="panel-paragraph" id="about-bio-short">I am a versatile Digital Solutions Specialist. My work combines technical computer science excellence with creative thinking to build highly impactful digital experiences.</p>
+                  <p class="panel-paragraph">From frontend web systems to custom social marketing campaigns, I help businesses grow and establish an authoritative, premium online presence.</p>
                 </div>
-                
                 <button class="comic-btn-premium" id="btn-open-about" aria-label="Open About Details">
                   [ ACCESS CLASSIFIED LOGS ]
-                  <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -188,22 +209,18 @@
         </div>
       </section>
 
-      <!-- CHAPTER 2: THE ARSENAL (SKILLS) -->
-      <section class="comic-chapter" id="sec-2">
+      <!-- CHAPTER 2: SKILLS ───────────────── -->
+      <section class="comic-chapter" id="sec-2" aria-label="Chapter 2 — The Arsenal">
         <div class="comic-page">
           <div class="chapter-header">
             <span class="chapter-index">CHAPTER 02 //</span>
             <h2 class="chapter-title">THE ARSENAL</h2>
           </div>
-
-          <div class="sound-fx pop-effect" style="top: 8%; right: 10%; transform: rotate(10deg); color: var(--accent-pink);">&lt;LOAD_SYS!&gt;</div>
-
           <div class="skills-comic-grid">
-            <!-- Left Panel: Graphic Workstation -->
             <div class="comic-panel artwork-panel pane-left" style="background-image: url('/assets/comic_skills-cxKGirmj.png');">
-              <div class="panel-border-glow"></div>
-              <div class="panel-overlay-grad"></div>
-              <div class="speech-bubble top-right">
+              <div class="panel-border-glow" aria-hidden="true"></div>
+              <div class="panel-overlay-grad" aria-hidden="true"></div>
+              <div class="speech-bubble top-right" role="note">
                 <span class="bubble-speaker">AGENT</span>
                 <p class="bubble-text">"Holographic systems sync'd. All technologies loaded at maximum efficiency."</p>
               </div>
@@ -212,33 +229,18 @@
                 <p class="caption-body">Compiling skills spanning software development, media editing, and audience engagement tracking.</p>
               </div>
             </div>
-
-            <!-- Right Panel: Technology Breakdown -->
             <div class="comic-panel list-panel pane-right">
-              <div class="panel-border-glow"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
               <div class="panel-content flex-column-between">
                 <div>
                   <h3 class="panel-heading">Core <span>Capacities</span></h3>
-                  
-                  <div class="skills-mini-chart">
-                    <div class="skills-chart-row">
-                      <span class="chart-label">Software Dev (React, JS, HTML/CSS)</span>
-                      <div class="chart-bar"><div class="chart-fill bg-cyan" style="--width: 85%"></div></div>
-                    </div>
-                    <div class="skills-chart-row">
-                      <span class="chart-label">Creative Media (Figma, Adobe Suite)</span>
-                      <div class="chart-bar"><div class="chart-fill bg-pink" style="--width: 90%"></div></div>
-                    </div>
-                    <div class="skills-chart-row">
-                      <span class="chart-label">Marketing & Ads (Meta Ads, SEO)</span>
-                      <div class="chart-bar"><div class="chart-fill bg-purple" style="--width: 80%"></div></div>
-                    </div>
+                  <div class="skills-mini-chart" id="skills-chart">
+                    <!-- Populated by JS -->
                   </div>
                 </div>
-
                 <button class="comic-btn-premium" id="btn-open-skills" aria-label="Open Skills Details">
                   [ INVENTORY DETAILS ]
-                  <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -246,53 +248,26 @@
         </div>
       </section>
 
-      <!-- CHAPTER 3: ACTIVE OPERATIONS (PROJECTS) -->
-      <section class="comic-chapter" id="sec-3">
+      <!-- CHAPTER 3: PROJECTS ─────────────── -->
+      <section class="comic-chapter" id="sec-3" aria-label="Chapter 3 — Active Operations">
         <div class="comic-page">
           <div class="chapter-header">
             <span class="chapter-index">CHAPTER 03 //</span>
             <h2 class="chapter-title">ACTIVE OPERATIONS</h2>
           </div>
-
-          <div class="sound-fx pop-effect" style="bottom: 12%; left: 30%; transform: rotate(-8deg); color: var(--accent-orange); font-size: 1.7rem;">&lt;SYNC_OPS!&gt;</div>
-
           <div class="projects-comic-grid">
-            <!-- Left panel: Project Grid Cards -->
             <div class="comic-panel cards-panel pane-left">
-              <div class="panel-border-glow"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
               <div class="panel-content">
                 <h3 class="panel-heading">Mission <span>Logs</span></h3>
-                
-                <div class="comic-project-rows">
-                  <div class="project-mini-row" id="row-proj-1">
-                    <span class="row-num">#01</span>
-                    <div class="row-info">
-                      <h4 class="row-title">University Website Management</h4>
-                      <p class="row-tags">WordPress / Google Analytics / SEO</p>
-                    </div>
-                  </div>
-                  <div class="project-mini-row" id="row-proj-2">
-                    <span class="row-num">#02</span>
-                    <div class="row-info">
-                      <h4 class="row-title">Responsive UI Development</h4>
-                      <p class="row-tags">React / JavaScript / HTML & CSS</p>
-                    </div>
-                  </div>
-                  <div class="project-mini-row" id="row-proj-3">
-                    <span class="row-num">#03</span>
-                    <div class="row-info">
-                      <h4 class="row-title">Digital Marketing Campaigns</h4>
-                      <p class="row-tags">Meta Ads / Graphic Assets / Canva</p>
-                    </div>
-                  </div>
+                <div class="comic-project-rows" id="projects-rows">
+                  <!-- Populated by JS -->
                 </div>
               </div>
             </div>
-
-            <!-- Right panel: Floating Screens Artwork -->
             <div class="comic-panel artwork-panel pane-right" style="background-image: url('/assets/comic_projects-y5yDEHCl.png');">
-              <div class="panel-border-glow"></div>
-              <div class="panel-overlay-grad"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
+              <div class="panel-overlay-grad" aria-hidden="true"></div>
               <div class="caption-box top-right bg-purple">
                 <p class="caption-title">ACTIVE RUNTIME DEPLOYMENTS</p>
                 <p class="caption-body">Inter-device communications, cloud marketing matrices, and optimized SEO databases.</p>
@@ -307,22 +282,18 @@
         </div>
       </section>
 
-      <!-- CHAPTER 4: THE CHRONICLE (EXPERIENCE) -->
-      <section class="comic-chapter" id="sec-4">
+      <!-- CHAPTER 4: EXPERIENCE ───────────── -->
+      <section class="comic-chapter" id="sec-4" aria-label="Chapter 4 — The Chronicle">
         <div class="comic-page">
           <div class="chapter-header">
             <span class="chapter-index">CHAPTER 04 //</span>
             <h2 class="chapter-title">THE CHRONICLE</h2>
           </div>
-
-          <div class="sound-fx pop-effect" style="top: 15%; right: 35%; transform: rotate(15deg); color: var(--accent-green);">&lt;TRANSIT!&gt;</div>
-
           <div class="experience-comic-grid">
-            <!-- Left panel: Path corridor illustration -->
             <div class="comic-panel artwork-panel pane-left" style="background-image: url('/assets/comic_experience-DEvIYJGd.png');">
-              <div class="panel-border-glow"></div>
-              <div class="panel-overlay-grad"></div>
-              <div class="speech-bubble bottom-left">
+              <div class="panel-border-glow" aria-hidden="true"></div>
+              <div class="panel-overlay-grad" aria-hidden="true"></div>
+              <div class="speech-bubble bottom-left" role="note">
                 <span class="bubble-speaker">GUIDE</span>
                 <p class="bubble-text">"Agent progression logs tracked. Academic records and internship operations online."</p>
               </div>
@@ -331,33 +302,18 @@
                 <p class="caption-body">Pathways taken through Secure Software Academics (Cybersecurity) and Digital Design operations.</p>
               </div>
             </div>
-
-            <!-- Right panel: Timeline Summary -->
             <div class="comic-panel timeline-panel pane-right">
-              <div class="panel-border-glow"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
               <div class="panel-content flex-column-between">
                 <div>
                   <h3 class="panel-heading">Timeline <span>Milestones</span></h3>
-                  
-                  <div class="chronicle-summary-nodes">
-                    <div class="chronicle-node">
-                      <span class="node-date">2026</span>
-                      <p class="node-text"><strong>Development & Marketing Intern</strong> - Swaastik Solutions</p>
-                    </div>
-                    <div class="chronicle-node">
-                      <span class="node-date">2024-2025</span>
-                      <p class="node-text"><strong>Website & Content Manager</strong> - Parul University</p>
-                    </div>
-                    <div class="chronicle-node">
-                      <span class="node-date">MCA 2025</span>
-                      <p class="node-text"><strong>Integrated MCA (Cybersecurity)</strong> - Parul University</p>
-                    </div>
+                  <div class="chronicle-summary-nodes" id="experience-nodes">
+                    <!-- Populated by JS -->
                   </div>
                 </div>
-
                 <button class="comic-btn-premium" id="btn-open-experience" aria-label="Open Experience Details">
                   [ TRANSMIT CHRONOLOGY ]
-                  <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -365,66 +321,53 @@
         </div>
       </section>
 
-      <!-- CHAPTER 5: TRANSMISSION BEACON (CONTACT) -->
-      <section class="comic-chapter" id="sec-5">
+      <!-- CHAPTER 5: CONTACT ──────────────── -->
+      <section class="comic-chapter" id="sec-5" aria-label="Chapter 5 — Transmission Beacon">
         <div class="comic-page">
           <div class="chapter-header">
             <span class="chapter-index">CHAPTER 05 //</span>
             <h2 class="chapter-title">TRANSMISSION BEACON</h2>
           </div>
-
-          <div class="sound-fx pop-effect" style="top: 10%; left: 30%; transform: rotate(-5deg); color: var(--accent-light);">&lt;BEACON_ON!&gt;</div>
-
           <div class="contact-comic-grid">
-            <!-- Left panel: Holographic communication form -->
             <div class="comic-panel form-panel pane-left">
-              <div class="panel-border-glow"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
               <div class="panel-content">
                 <h3 class="panel-heading">Transmit <span>Input</span></h3>
-                
-                <form class="comic-form" id="portfolio-contact-form">
-
+                <form class="comic-form" id="portfolio-contact-form" novalidate>
                   <div class="form-group-item">
                     <label class="form-group-label" for="form-name">Name</label>
-                    <input class="form-group-input" type="text" id="form-name" name="name" placeholder="Please provide your name" required />
+                    <input class="form-group-input" type="text" id="form-name" name="name" placeholder="Please provide your name" required autocomplete="name" />
                   </div>
                   <div class="form-group-item">
                     <label class="form-group-label" for="form-email">Email Address</label>
-                    <input class="form-group-input" type="email" id="form-email" name="email" placeholder="Your email address" required />
+                    <input class="form-group-input" type="email" id="form-email" name="email" placeholder="Your email address" required autocomplete="email" />
                   </div>
                   <div class="form-group-item">
                     <label class="form-group-label" for="form-message">Message</label>
                     <textarea class="form-group-input" id="form-message" name="message" rows="3" placeholder="Write your message here..." required></textarea>
                   </div>
-                  
                   <div class="form-action-buttons">
-                    <button class="comic-btn-premium inline-glow" type="submit" id="btn-submit-contact">
-                      [ RUN UPLOAD ]
-                    </button>
-                    <a href="/resume.pdf" download class="comic-btn-premium inline-glow text-decor-none text-center" id="link-resume">
-                      [ RESUME.PDF ]
-                    </a>
+                    <button class="comic-btn-premium inline-glow" type="submit" id="btn-submit-contact">[ RUN UPLOAD ]</button>
+                    <a href="/resume.pdf" download class="comic-btn-premium inline-glow text-decor-none text-center" id="link-resume" aria-label="Download resume PDF">[ RESUME.PDF ]</a>
                   </div>
                 </form>
               </div>
             </div>
-
-            <!-- Right panel: Terminal Terminal Beacon -->
             <div class="comic-panel artwork-panel pane-right" style="background-image: url('/assets/comic_contact-4Kkd6ljH.png');">
-              <div class="panel-border-glow"></div>
-              <div class="panel-overlay-grad"></div>
+              <div class="panel-border-glow" aria-hidden="true"></div>
+              <div class="panel-overlay-grad" aria-hidden="true"></div>
               <div class="caption-box bottom-right bg-cyan">
                 <p class="caption-title">BEACON CHANNELS</p>
                 <p class="caption-body">
-                  Direct: <a href="tel:+919509006795" style="color: #000; font-weight: 700; text-decoration: underline;">+91 9509006795</a> | <a href="mailto:mollyvyas@gmail.com" style="color: #000; font-weight: 700; text-decoration: underline;">mollyvyas@gmail.com</a>
-                  <br/>
-                  Nodes: 
-                  <a href="https://www.linkedin.com/in/mukul-vyas-hey/" target="_blank" rel="noopener noreferrer" style="color: #000; font-weight: 700; text-decoration: underline; margin-right: 0.5rem;">LinkedIn</a>
-                  <a href="https://github.com/NPC-9509" target="_blank" rel="noopener noreferrer" style="color: #000; font-weight: 700; text-decoration: underline; margin-right: 0.5rem;">GitHub</a>
-                  <a href="https://www.instagram.com/_mukul_vyas_/" target="_blank" rel="noopener noreferrer" style="color: #000; font-weight: 700; text-decoration: underline;">Instagram</a>
+                  Direct: <a id="beacon-phone" href="tel:+919509006795" style="color:#000;font-weight:700;text-decoration:underline;">+91 9509006795</a> | <a id="beacon-email" href="mailto:mollyvyas@gmail.com" style="color:#000;font-weight:700;text-decoration:underline;">mollyvyas@gmail.com</a>
+                  <br />
+                  Nodes:
+                  <a href="https://www.linkedin.com/in/mukul-vyas-hey/" target="_blank" rel="noopener noreferrer" style="color:#000;font-weight:700;text-decoration:underline;margin-right:.5rem;">LinkedIn</a>
+                  <a href="https://github.com/NPC-9509" target="_blank" rel="noopener noreferrer" style="color:#000;font-weight:700;text-decoration:underline;margin-right:.5rem;">GitHub</a>
+                  <a href="https://www.instagram.com/_mukul_vyas_/" target="_blank" rel="noopener noreferrer" style="color:#000;font-weight:700;text-decoration:underline;">Instagram</a>
                 </p>
               </div>
-              <div class="speech-bubble top-left">
+              <div class="speech-bubble top-left" role="note">
                 <span class="bubble-speaker">TERMINAL</span>
                 <p class="bubble-text">"Open audio/data tunnel active. Uploading files."</p>
               </div>
@@ -433,49 +376,40 @@
         </div>
       </section>
 
-    </div>
+    </main>
 
-    <!-- COMIC BOOK DETAILS MODAL SHEETS -->
-    
-    <!-- Modal 1: Origin / About -->
-    <div class="comic-detail-modal" id="modal-about">
+    <!-- ════════════════════════════════ -->
+    <!-- MODALS                           -->
+    <!-- ════════════════════════════════ -->
+
+    <!-- Modal 1: About -->
+    <div class="comic-detail-modal" id="modal-about" role="dialog" aria-modal="true" aria-label="About Mukul Vyas" aria-hidden="true">
       <div class="modal-hologram-wrapper">
-        <button class="modal-close-trigger" data-close="modal-about" aria-label="Close modal">
-          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+        <button class="modal-close-trigger" data-close="modal-about" aria-label="Close About modal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
         </button>
-        
         <div class="modal-comic-book-page">
-          <!-- Modals styled as double-spread comic pages -->
           <div class="modal-comic-header">
             <span class="chapter-number">LOGS: SYSTEM // ORIGIN REPORT</span>
-            <h3 class="modal-comic-title">ABOUT AGENT: MUKUL VYAS</h3>
+            <h2 class="modal-comic-title">ABOUT AGENT: MUKUL VYAS</h2>
           </div>
-          
           <div class="modal-comic-grid-2col">
             <div class="modal-comic-panel text-block-panel">
-              <div class="comic-card-border"></div>
+              <div class="comic-card-border" aria-hidden="true"></div>
               <div class="modal-panel-content">
                 <span class="log-stamp">[LOG_DATE: 2026.05.31]</span>
-                <h4 class="modal-subheading">Digital Solutions Specialist</h4>
-                <p>
-                  I am a creative Social Media Creator, Video Editor, and Front-End Developer with a strong academic background in Cybersecurity (Integrated MCA, 2025, Parul University). I bridge secure engineering practices with immersive frontend styles and high-growth digital marketing systems.
-                </p>
-                
-                <p>
-                  Specialized in coding responsive web architectures, designing professional media dashboards, and configuration parameters of social ads. Collaborative work with teams at Swaastik Solutions and Parul University has allowed me to engineer secure website layers and develop dynamic content.
-                </p>
+                <h3 class="modal-subheading">Digital Solutions Specialist</h3>
+                <p id="modal-about-detail"><!-- JS --></p>
+                <p id="modal-about-passion"><!-- JS --></p>
+                <p id="modal-about-collab"><!-- JS --></p>
               </div>
             </div>
-
-            <!-- Right Column Flex Container: Stacks photo and caption vertically to prevent overlapping face -->
-            <div class="modal-right-col-flex" style="display: flex; flex-direction: column; height: 100%; gap: 0.8rem;">
-              <!-- Photo Panel (stretched to take all available space) -->
-              <div class="modal-comic-panel artwork-block-panel" style="position: relative; flex-grow: 1; overflow: hidden; border: 3px solid #000; box-shadow: 4px 4px 0 #000; min-height: 250px;">
-                <img src="/assets/profile-BvMH3Bf-.png" alt="Mukul Vyas" style="width: 100%; height: 100%; object-fit: cover; object-position: center 10%; display: block;" />
-                <div class="comic-card-border"></div>
+            <div class="modal-right-col-flex" style="display:flex;flex-direction:column;height:100%;gap:.8rem;">
+              <div class="modal-comic-panel artwork-block-panel" style="position:relative;flex-grow:1;overflow:hidden;border:3px solid #000;box-shadow:4px 4px 0 #000;min-height:250px;">
+                <img id="modal-about-img" src="/assets/profile-BvMH3Bf-.png" alt="Mukul Vyas profile photo" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;display:block;" />
+                <div class="comic-card-border" aria-hidden="true"></div>
               </div>
-              <!-- Caption box positioned relatively below the image so it never covers the headshot -->
-              <div class="caption-box bg-pink" style="position: relative; width: 100%; border: 3px solid #000; box-shadow: 4px 4px 0 #000; margin: 0; max-width: none;">
+              <div class="caption-box bg-pink" style="position:relative;width:100%;border:3px solid #000;box-shadow:4px 4px 0 #000;margin:0;max-width:none;">
                 <p class="caption-title">AGENT PROFILE IDENT</p>
                 <p class="caption-body">Mukul Vyas, MCA (Cybersecurity), Digital Solutions Specialist.</p>
               </div>
@@ -485,271 +419,76 @@
       </div>
     </div>
 
-    <!-- Modal 2: Arsenal / Skills -->
-    <div class="comic-detail-modal" id="modal-skills">
+    <!-- Modal 2: Skills -->
+    <div class="comic-detail-modal" id="modal-skills" role="dialog" aria-modal="true" aria-label="Skills Arsenal" aria-hidden="true">
       <div class="modal-hologram-wrapper">
-        <button class="modal-close-trigger" data-close="modal-skills" aria-label="Close modal">
-          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+        <button class="modal-close-trigger" data-close="modal-skills" aria-label="Close Skills modal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
         </button>
-        
         <div class="modal-comic-book-page">
           <div class="modal-comic-header">
             <span class="chapter-number">LOGS: SYSTEM // INVENTORY OF TOOLS</span>
-            <h3 class="modal-comic-title">THE TECHNICAL ARSENAL</h3>
+            <h2 class="modal-comic-title">THE TECHNICAL ARSENAL</h2>
           </div>
-          
-          <div class="modal-comic-grid-3col">
-            <!-- Col 1: Software -->
-            <div class="modal-comic-panel list-card-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-panel-content">
-                <div class="card-icon-header">
-                  <span class="card-icon">💻</span>
-                  <h4 class="card-title">Software Development</h4>
-                </div>
-                <p class="card-summary">
-                  Building modern web architectures and custom programming solutions focusing on speed, responsiveness, and clean codebase logic.
-                </p>
-                <div class="comic-badges-group">
-                  <span class="tag-badge color-cyan">React</span>
-                  <span class="tag-badge color-cyan">JavaScript</span>
-                  <span class="tag-badge color-cyan">Python</span>
-                  <span class="tag-badge color-cyan">Node.js</span>
-                  <span class="tag-badge color-cyan">HTML5</span>
-                  <span class="tag-badge color-cyan">CSS3</span>
-                  <span class="tag-badge color-cyan">MySQL</span>
-                  <span class="tag-badge color-cyan">MongoDB</span>
-                  <span class="tag-badge color-cyan">Git</span>
-                  <span class="tag-badge color-cyan">GitHub</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Col 2: Creative -->
-            <div class="modal-comic-panel list-card-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-panel-content">
-                <div class="card-icon-header">
-                  <span class="card-icon">🎨</span>
-                  <h4 class="card-title">Creative Design</h4>
-                </div>
-                <p class="card-summary">
-                  Crafting highly engaging digital assets, vector layouts, user interfaces, motion graphics overlays, and cinematic video edits.
-                </p>
-                <div class="comic-badges-group">
-                  <span class="tag-badge color-pink">Photoshop</span>
-                  <span class="tag-badge color-pink">Illustrator</span>
-                  <span class="tag-badge color-pink">Figma</span>
-                  <span class="tag-badge color-pink">Premiere Pro</span>
-                  <span class="tag-badge color-pink">After Effects</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Col 3: Marketing -->
-            <div class="modal-comic-panel list-card-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-panel-content">
-                <div class="card-icon-header">
-                  <span class="card-icon">📈</span>
-                  <h4 class="card-title">Social Media Marketing</h4>
-                </div>
-                <p class="card-summary">
-                  Deploying strategic campaigns across advertising modules, analyzing traffic metrics, and optimizing visibility metrics.
-                </p>
-                <div class="comic-badges-group">
-                  <span class="tag-badge color-purple">Meta Ads</span>
-                  <span class="tag-badge color-purple">Instagram Growth</span>
-                  <span class="tag-badge color-purple">LinkedIn Strategy</span>
-                  <span class="tag-badge color-purple">YouTube Promo</span>
-                  <span class="tag-badge color-purple">Meta Business</span>
-                  <span class="tag-badge color-purple">Google Analytics</span>
-                </div>
-              </div>
-            </div>
+          <div class="modal-comic-grid-3col" id="modal-skills-cols">
+            <!-- Populated by JS -->
           </div>
-
           <div class="modal-comic-footer-strip">
             <div class="certifications-row">
               <span class="cert-title">// CERTIFIED TELEMETRY:</span>
-              <span class="cert-badge">FUNDAMENTALS OF DIGITAL MARKETING - GOOGLE</span>
-              <span class="cert-badge">INTRODUCTION TO CYBERSECURITY - CISCO</span>
+              <span id="modal-skills-certs"><!-- JS --></span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal 3: Missions / Projects -->
-    <div class="comic-detail-modal" id="modal-projects">
+    <!-- Modal 3: Projects -->
+    <div class="comic-detail-modal" id="modal-projects" role="dialog" aria-modal="true" aria-label="Featured Projects" aria-hidden="true">
       <div class="modal-hologram-wrapper">
-        <button class="modal-close-trigger" data-close="modal-projects" aria-label="Close modal">
-          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+        <button class="modal-close-trigger" data-close="modal-projects" aria-label="Close Projects modal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
         </button>
-        
         <div class="modal-comic-book-page overflow-y-auto max-h-modal">
           <div class="modal-comic-header">
             <span class="chapter-number">LOGS: SYSTEM // COMPLETED MISSION DOSSIER</span>
-            <h3 class="modal-comic-title">FEATURED MISSIONS</h3>
+            <h2 class="modal-comic-title">FEATURED MISSIONS</h2>
           </div>
-          
-          <div class="modal-comic-projects-grid">
-            <!-- Project 1 -->
-            <div class="modal-comic-panel project-item-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-project-layout-inner">
-                <div class="modal-project-text">
-                  <span class="proj-index-tag">MISSION #01</span>
-                  <h4 class="modal-project-title">University Website Management</h4>
-                  <p>
-                    Managed and systematically updated content layouts on Parul University's web domains. Analyzed traffic data logs using Google Analytics, implemented SEO modifications, and checked server settings.
-                  </p>
-                  <div class="proj-badge-list">
-                    <span class="tag-badge color-cyan">WordPress</span>
-                    <span class="tag-badge color-cyan">SEO</span>
-                    <span class="tag-badge color-cyan">Google Analytics</span>
-                    <span class="tag-badge color-cyan">Site Management</span>
-                  </div>
-                </div>
-                <div class="modal-project-artwork" style="position: relative; overflow: hidden;">
-                  <img src="/assets/university_artwork-CIeqHOjV.png" alt="University Website Management" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="modal-comic-panel project-item-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-project-layout-inner">
-                <div class="modal-project-text">
-                  <span class="proj-index-tag">MISSION #02</span>
-                  <h4 class="modal-project-title">Responsive UI Development</h4>
-                  <p>
-                    Constructed cross-device responsive modules, layout templates, and interactive component libraries. Focused on speed indices and responsive CSS media structures.
-                  </p>
-                  <div class="proj-badge-list">
-                    <span class="tag-badge color-pink">React</span>
-                    <span class="tag-badge color-pink">JavaScript</span>
-                    <span class="tag-badge color-pink">HTML5</span>
-                    <span class="tag-badge color-pink">CSS3</span>
-                    <span class="tag-badge color-pink">Responsive Design</span>
-                  </div>
-                </div>
-                <div class="modal-project-artwork" style="position: relative; overflow: hidden;">
-                  <img src="/assets/project_laptop-DdmJSzML.jpg" alt="Responsive UI Development" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Project 3 -->
-            <div class="modal-comic-panel project-item-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-project-layout-inner">
-                <div class="modal-project-text">
-                  <span class="proj-index-tag">MISSION #03</span>
-                  <h4 class="modal-project-title">Digital Marketing & Social Media</h4>
-                  <p>
-                    Configured marketing tracks, optimized Meta Ads targeting parameters, and built visual campaign media dashboards to increase lead generation.
-                  </p>
-                  <div class="proj-badge-list">
-                    <span class="tag-badge color-purple">Meta Ads</span>
-                    <span class="tag-badge color-purple">Instagram Ad-Mgr</span>
-                    <span class="tag-badge color-purple">Canva Design</span>
-                    <span class="tag-badge color-purple">Campaign Analytics</span>
-                  </div>
-                </div>
-                <div class="modal-project-artwork" style="position: relative; overflow: hidden;">
-                  <img src="/assets/project_phone-CiuhcSqT.jpg" alt="Digital Marketing" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" />
-                </div>
-              </div>
-            </div>
+          <div class="modal-comic-projects-grid" id="modal-projects-grid">
+            <!-- Populated by JS -->
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal 4: Chronicle / Experience -->
-    <div class="comic-detail-modal" id="modal-experience">
+    <!-- Modal 4: Experience -->
+    <div class="comic-detail-modal" id="modal-experience" role="dialog" aria-modal="true" aria-label="Experience Chronicle" aria-hidden="true">
       <div class="modal-hologram-wrapper">
-        <button class="modal-close-trigger" data-close="modal-experience" aria-label="Close modal">
-          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+        <button class="modal-close-trigger" data-close="modal-experience" aria-label="Close Experience modal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
         </button>
-        
         <div class="modal-comic-book-page">
           <div class="modal-comic-header">
             <span class="chapter-number">LOGS: SYSTEM // SERVICE ARCHIVES</span>
-            <h3 class="modal-comic-title">THE AGENT CHRONICLE</h3>
+            <h2 class="modal-comic-title">THE AGENT CHRONICLE</h2>
           </div>
-          
           <div class="modal-comic-grid-2col">
-            <!-- Timeline Cards -->
             <div class="modal-comic-panel timeline-details-panel">
-              <div class="comic-card-border"></div>
-              <div class="modal-panel-content overflow-y-auto">
-                
-                <div class="timeline-detail-item">
-                  <div class="timeline-date-tag bg-purple">Feb 2026 — May 2026</div>
-                  <h4 class="timeline-role">Front-End Dev & Social Media Intern</h4>
-                  <span class="timeline-org">Swaastik Solutions</span>
-                  <p class="timeline-desc">
-                    Engineered custom responsive interfaces and UI layouts. Managed Meta Ads target accounts, constructed vector graphics inside Canva, and drove organic search visibility optimizations.
-                  </p>
-                </div>
-
-                <div class="timeline-detail-item">
-                  <div class="timeline-date-tag bg-cyan">Aug 2024 — Jun 2025</div>
-                  <h4 class="timeline-role">Digital Content & Website Manager</h4>
-                  <span class="timeline-org">Parul University</span>
-                  <p class="timeline-desc">
-                    Maintained core university website interfaces. Monitored traffic flow dashboards via Google Analytics, optimized load layouts, and collaborated with cybersecurity teams to prevent interface exploits.
-                  </p>
-                </div>
-
-                <div class="timeline-detail-item">
-                  <div class="timeline-date-tag bg-pink">Education // 2020 — 2025</div>
-                  <h4 class="timeline-role">Integrated MCA (Specialization: Cybersecurity)</h4>
-                  <span class="timeline-org">Parul University</span>
-                  <p class="timeline-desc">
-                    Completed master computer science credentials with a focus on system defenses, cryptography protocols, fullstack script writing, and secure layout design patterns.
-                  </p>
-                </div>
-
+              <div class="comic-card-border" aria-hidden="true"></div>
+              <div class="modal-panel-content overflow-y-auto" id="modal-experience-timeline">
+                <!-- Populated by JS -->
               </div>
             </div>
-
-            <!-- Col 2: Achievements / Awards -->
             <div class="modal-comic-panel achievements-details-panel">
-              <div class="comic-card-border"></div>
+              <div class="comic-card-border" aria-hidden="true"></div>
               <div class="modal-panel-content flex-column-between">
                 <div>
-                  <h4 class="modal-subheading">Achievements & Badges</h4>
-                  
-                  <ul class="modal-achievement-list">
-                    <li>
-                      <span class="achievement-icon">🏆</span>
-                      <div class="achievement-text">
-                        <strong>Volunteering Recognition</strong>
-                        <p>Awarded for excellence in university community organizations and cultural event setups.</p>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="achievement-icon">⚡</span>
-                      <div class="achievement-text">
-                        <strong>Inter-college Cultural Winner</strong>
-                        <p>Recognized for outstanding creative leadership in digital media competitions.</p>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="achievement-icon">⚽</span>
-                      <div class="achievement-text">
-                        <strong>Football Championship Badge</strong>
-                        <p>Certificate of Excellence - Inter-college Football Tournament.</p>
-                      </div>
-                    </li>
+                  <h3 class="modal-subheading">Achievements &amp; Badges</h3>
+                  <ul class="modal-achievement-list" id="modal-awards-list" aria-label="Awards and achievements">
+                    <!-- Populated by JS -->
                   </ul>
                 </div>
-
-                <div class="caption-box bottom-left bg-cyan" style="position: static; margin-top: 1rem;">
+                <div class="caption-box bottom-left bg-cyan" style="position:static;margin-top:1rem;">
                   <p class="caption-title">CHRONICLE COMPILING COMPLETE</p>
                   <p class="caption-body">Verify active communication link channels on transmission page.</p>
                 </div>
@@ -760,7 +499,175 @@
       </div>
     </div>
 
+    <!-- ════════════════════════════════ -->
+    <!-- DEVELOPER TERMINAL              -->
+    <!-- ════════════════════════════════ -->
+    <div id="terminal-panel" role="dialog" aria-modal="true" aria-label="Developer Terminal" aria-hidden="true">
+      <div class="terminal-inner">
+        <div class="terminal-topbar">
+          <span class="terminal-title"><span class="t-pink">agent@mv-terminal</span>:<span class="t-cyan">~</span> // <span class="t-muted">RTR_200 SPEED PROTOCOL</span></span>
+          <div class="terminal-controls">
+            <kbd class="terminal-shortcut">Ctrl+`</kbd>
+            <button id="terminal-close-btn" class="terminal-close-btn" aria-label="Close terminal">✕</button>
+          </div>
+        </div>
+        <div class="terminal-output" id="terminal-output" aria-live="polite" aria-label="Terminal output"></div>
+        <div class="terminal-inputrow">
+          <span class="terminal-prompt" aria-hidden="true">agent@mv-terminal:~$</span>
+          <input type="text" id="terminal-input" class="terminal-input" placeholder="type a command..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input" />
+        </div>
+      </div>
+    </div>
 
-    <!-- Script loading -->
+    <!-- ════════════════════════════════ -->
+    <!-- AI GUIDE ASSISTANT              -->
+    <!-- ════════════════════════════════ -->
+    <div id="ai-assistant-widget" aria-label="AI Guide Assistant">
+      <button id="ai-toggle-btn" class="ai-toggle-btn" aria-label="Open AI guide" aria-expanded="false" title="Open AI Guide">
+        <span class="ai-toggle-icon" aria-hidden="true">SYS</span>
+        <span class="ai-pulse-ring" aria-hidden="true"></span>
+      </button>
+      <div class="ai-panel">
+        <div class="ai-panel-header">
+          <span class="ai-panel-title">// SYS_AI GUIDE</span>
+          <div class="ai-header-controls">
+            <button id="ai-voice-btn" class="ai-voice-btn" aria-label="Toggle voice output" title="Toggle voice">🔊</button>
+            <button id="ai-close-btn" class="ai-close-btn" aria-label="Close AI guide">✕</button>
+          </div>
+        </div>
+        <div class="ai-chat-area" id="ai-chat-area" aria-live="polite" aria-label="AI chat messages"></div>
+        <div class="ai-suggestions-row" id="ai-suggestions-row" aria-label="Quick questions suggestion row"></div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-input" class="ai-input" placeholder="Ask me anything..." autocomplete="off" aria-label="Ask the AI guide" />
+          <button id="ai-send-btn" class="ai-send-btn" aria-label="Send message">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- AUDIO CAPTIONS OVERLAY (Phase 13) -->
+    <!-- ════════════════════════════════ -->
+    <div id="audio-captions-overlay" class="audio-captions-container" role="status" aria-live="polite" aria-hidden="true"></div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- SETTINGS PANEL (Phase 12)       -->
+    <!-- ════════════════════════════════ -->
+    <div class="comic-detail-modal" id="modal-settings" role="dialog" aria-modal="true" aria-label="Settings Panel" aria-hidden="true">
+      <div class="modal-hologram-wrapper">
+        <button class="modal-close-trigger" data-close="modal-settings" aria-label="Close Settings modal">✕</button>
+        <div class="modal-comic-book-page">
+          <div class="modal-comic-header">
+            <span class="chapter-number">SYSTEM CONFIGURATION // OPTIONS</span>
+            <h2 class="modal-comic-title">CONTROL PANEL</h2>
+          </div>
+          <div class="settings-panel-grid">
+            <div class="settings-panel-section">
+              <h3 class="settings-sec-title">// GRAPHICS PRESET</h3>
+              <div class="settings-buttons-group">
+                <button class="preset-btn" data-preset="ultra">ULTRA</button>
+                <button class="preset-btn" data-preset="high">HIGH</button>
+                <button class="preset-btn" data-preset="medium">MEDIUM</button>
+                <button class="preset-btn" data-preset="low">LOW</button>
+                <button class="preset-btn" data-preset="battery-saver">BATTERY SAVER</button>
+                <button class="preset-btn active" data-preset="auto">AUTO DETECT</button>
+              </div>
+            </div>
+            <div class="settings-panel-section">
+              <h3 class="settings-sec-title">// WEATHER CONDITIONS</h3>
+              <div class="settings-buttons-group">
+                <button class="weather-btn active" data-weather="rain">RAIN</button>
+                <button class="weather-btn" data-weather="fog">FOG</button>
+                <button class="weather-btn" data-weather="dust">DUST</button>
+                <button class="weather-btn" data-weather="digital">DIGITAL</button>
+                <button class="weather-btn" data-weather="snow">SNOW</button>
+                <button class="weather-btn" data-weather="none">OFF</button>
+              </div>
+            </div>
+            <div class="settings-panel-section">
+              <h3 class="settings-sec-title">// TIME OF DAY</h3>
+              <div class="settings-buttons-group">
+                <button class="tod-btn" data-tod="morning">MORNING</button>
+                <button class="tod-btn" data-tod="sunset">SUNSET</button>
+                <button class="tod-btn" data-tod="night">NIGHT</button>
+                <button class="tod-btn active" data-tod="neon">NEON</button>
+              </div>
+            </div>
+            <div class="settings-panel-section">
+              <h3 class="settings-sec-title">// ACCESSIBILITY CONFIGS</h3>
+              <label class="setting-switch-wrapper">
+                <input type="checkbox" id="setting-captions" checked />
+                <span class="setting-switch-label">Audio Captions (Subtitles)</span>
+              </label>
+              <label class="setting-switch-wrapper">
+                <input type="checkbox" id="setting-highcontrast" />
+                <span class="setting-switch-label">High Contrast Theme</span>
+              </label>
+              <label class="setting-switch-wrapper">
+                <input type="checkbox" id="setting-reducedmotion" />
+                <span class="setting-switch-label">Reduced Motion Mode</span>
+              </label>
+              <div class="setting-range-wrapper">
+                <label class="setting-range-label" for="setting-motionintensity">Motion Intensity: <span id="val-motionintensity">1.0</span></label>
+                <input type="range" id="setting-motionintensity" min="0" max="1" step="0.1" value="1.0" />
+              </div>
+              <button id="setting-photomode-btn" class="comic-btn-premium" style="width:100%;margin-top:0.8rem;" aria-label="Activate Photo Mode">[ ACTIVATE PHOTO MODE ]</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- INTERACTIVE RESUME ROOM MODAL   -->
+    <!-- ════════════════════════════════ -->
+    <div class="comic-detail-modal" id="modal-resume-room" role="dialog" aria-modal="true" aria-label="Interactive Resume Room" aria-hidden="true">
+      <div class="modal-hologram-wrapper">
+        <button class="modal-close-trigger" data-close="modal-resume-room" aria-label="Close Resume Room modal">✕</button>
+        <div class="modal-comic-book-page overflow-y-auto">
+          <div class="modal-comic-header">
+            <span class="chapter-number">LOGS: DRIVER // RESUME MODULE</span>
+            <h2 class="modal-comic-title">INTERACTIVE RESUME ARCHIVE</h2>
+          </div>
+          <div class="resume-room-grid">
+            <div class="modal-comic-panel resume-dossier-panel">
+              <div class="comic-card-border"></div>
+              <div class="modal-panel-content">
+                <h3 class="modal-subheading">Agent Dossier: Mukul Vyas</h3>
+                <p class="panel-paragraph"><strong>Specialization:</strong> Digital Solutions (Design, Code, Grow)</p>
+                <p class="panel-paragraph"><strong>Focus:</strong> Cybersecurity, full-stack frameworks, strategic marketing deployment.</p>
+                <div class="resume-details-dossier">
+                  <div class="dossier-item"><strong>Education:</strong> MCA (Cybersecurity) @ Parul University</div>
+                  <div class="dossier-item"><strong>Experience:</strong> Web Development Intern @ Swaastik Solutions</div>
+                  <div class="dossier-item"><strong>Core Proficiencies:</strong> React, JavaScript, Python, Meta Advertising, Figma, Premiere Pro</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-comic-panel resume-downloads-panel">
+              <div class="comic-card-border"></div>
+              <div class="modal-panel-content flex-column-between">
+                <div>
+                  <h3 class="modal-subheading">Verified Credentials</h3>
+                  <ul class="certifications-list-bullet">
+                    <li>✓ Google Digital Marketing Fundamentals</li>
+                    <li>✓ Cisco Introduction to Cybersecurity</li>
+                    <li>✓ Cisco Network Defender Pathway</li>
+                  </ul>
+                </div>
+                <div class="resume-actions-group">
+                  <a href="/resume.pdf" download id="link-resume-modal" class="comic-btn-premium inline-glow text-decor-none text-center" style="display:block;">[ DOWNLOAD RESUME PDF ]</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ -->
+    <!-- ACHIEVEMENT TOAST               -->
+    <!-- ════════════════════════════════ -->
+    <div id="achievement-toast" role="status" aria-live="polite" aria-atomic="true" aria-label="Achievement notification"></div>
+
+    <!-- Scripts -->
   </body>
 </html>

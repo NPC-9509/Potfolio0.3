@@ -1,0 +1,69 @@
+[
+  {
+    "id": "proj-1",
+    "index": "#01",
+    "mission": "MISSION #01",
+    "title": "University Website Management",
+    "short_title": "University Website Management",
+    "tags": "WordPress / Google Analytics / SEO",
+    "description": "Managed and systematically updated content layouts on Parul University's web domains. Analyzed traffic data logs using Google Analytics, implemented SEO modifications, and checked server settings.",
+    "architecture": "WordPress CMS with custom theme modifications, Google Analytics integration, and on-page SEO optimization across multiple sub-domains.",
+    "challenge": "Keeping multiple university pages consistent, updated, and optimized for search while working across departments with different content requirements.",
+    "solution": "Established a content update workflow, created reusable page templates, and set up automated Google Analytics dashboards for traffic monitoring.",
+    "badges": [
+      { "label": "WordPress", "color": "cyan" },
+      { "label": "SEO", "color": "cyan" },
+      { "label": "Google Analytics", "color": "cyan" },
+      { "label": "Site Management", "color": "cyan" }
+    ],
+    "artwork": "/src/assets/university_artwork.png",
+    "liveUrl": null,
+    "sourceUrl": null,
+    "accent": "cyan"
+  },
+  {
+    "id": "proj-2",
+    "index": "#02",
+    "mission": "MISSION #02",
+    "title": "Responsive UI Development",
+    "short_title": "Responsive UI Development",
+    "tags": "React / JavaScript / HTML & CSS",
+    "description": "Constructed cross-device responsive modules, layout templates, and interactive component libraries. Focused on speed indices and responsive CSS media structures.",
+    "architecture": "React component architecture with Vanilla CSS for styling. Mobile-first responsive design using CSS Grid and Flexbox.",
+    "challenge": "Building pixel-perfect, cross-browser compatible UIs that maintain performance on older Android devices while still feeling premium.",
+    "solution": "Implemented progressive enhancement patterns, used CSS containment for layout isolation, and wrote lazy-loading image components to defer off-screen assets.",
+    "badges": [
+      { "label": "React", "color": "pink" },
+      { "label": "JavaScript", "color": "pink" },
+      { "label": "HTML5", "color": "pink" },
+      { "label": "CSS3", "color": "pink" },
+      { "label": "Responsive Design", "color": "pink" }
+    ],
+    "artwork": "/src/assets/project_laptop.jpg",
+    "liveUrl": null,
+    "sourceUrl": "https://github.com/NPC-9509",
+    "accent": "pink"
+  },
+  {
+    "id": "proj-3",
+    "index": "#03",
+    "mission": "MISSION #03",
+    "title": "Digital Marketing & Social Media",
+    "short_title": "Digital Marketing Campaigns",
+    "tags": "Meta Ads / Graphic Assets / Canva",
+    "description": "Configured marketing tracks, optimized Meta Ads targeting parameters, and built visual campaign media dashboards to increase lead generation.",
+    "architecture": "Multi-platform campaign structure across Meta Business Suite, Instagram Ad Manager, and Google Analytics for performance tracking.",
+    "challenge": "Achieving high ROI with limited ad budgets while building brand recognition for clients in competitive local markets.",
+    "solution": "Developed hyper-targeted audience segments using Meta's Lookalike Audiences, A/B tested creative assets, and optimized bidding strategies based on weekly analytics reports.",
+    "badges": [
+      { "label": "Meta Ads", "color": "purple" },
+      { "label": "Instagram Ad-Mgr", "color": "purple" },
+      { "label": "Canva Design", "color": "purple" },
+      { "label": "Campaign Analytics", "color": "purple" }
+    ],
+    "artwork": "/src/assets/project_phone.jpg",
+    "liveUrl": null,
+    "sourceUrl": null,
+    "accent": "purple"
+  }
+]

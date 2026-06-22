@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "id": "software",
+      "icon": "💻",
+      "label": "Software Development",
+      "color": "cyan",
+      "summary": "Building modern web architectures and custom programming solutions focusing on speed, responsiveness, and clean codebase logic.",
+      "chartLabel": "Software Dev (React, JS, HTML/CSS)",
+      "chartWidth": "85%",
+      "skills": [
+        { "name": "React", "years": 2, "level": 80 },
+        { "name": "JavaScript", "years": 4, "level": 88 },
+        { "name": "Python", "years": 3, "level": 75 },
+        { "name": "Node.js", "years": 2, "level": 70 },
+        { "name": "HTML5", "years": 5, "level": 95 },
+        { "name": "CSS3", "years": 5, "level": 92 },
+        { "name": "MySQL", "years": 3, "level": 72 },
+        { "name": "MongoDB", "years": 2, "level": 68 },
+        { "name": "Git", "years": 4, "level": 85 },
+        { "name": "GitHub", "years": 4, "level": 85 }
+      ]
+    },
+    {
+      "id": "creative",
+      "icon": "🎨",
+      "label": "Creative Design",
+      "color": "pink",
+      "summary": "Crafting highly engaging digital assets, vector layouts, user interfaces, motion graphics overlays, and cinematic video edits.",
+      "chartLabel": "Creative Media (Figma, Adobe Suite)",
+      "chartWidth": "90%",
+      "skills": [
+        { "name": "Photoshop", "years": 4, "level": 88 },
+        { "name": "Illustrator", "years": 3, "level": 82 },
+        { "name": "Figma", "years": 3, "level": 85 },
+        { "name": "Premiere Pro", "years": 4, "level": 86 },
+        { "name": "After Effects", "years": 3, "level": 78 }
+      ]
+    },
+    {
+      "id": "marketing",
+      "icon": "📈",
+      "label": "Social Media Marketing",
+      "color": "purple",
+      "summary": "Deploying strategic campaigns across advertising modules, analyzing traffic metrics, and optimizing visibility metrics.",
+      "chartLabel": "Marketing & Ads (Meta Ads, SEO)",
+      "chartWidth": "80%",
+      "skills": [
+        { "name": "Meta Ads", "years": 2, "level": 82 },
+        { "name": "Instagram Growth", "years": 3, "level": 85 },
+        { "name": "LinkedIn Strategy", "years": 2, "level": 76 },
+        { "name": "YouTube Promo", "years": 2, "level": 72 },
+        { "name": "Meta Business", "years": 2, "level": 80 },
+        { "name": "Google Analytics", "years": 3, "level": 78 }
+      ]
+    }
+  ],
+  "certifications": [
+    { "label": "FUNDAMENTALS OF DIGITAL MARKETING - GOOGLE" },
+    { "label": "INTRODUCTION TO CYBERSECURITY - CISCO" }
+  ]
+}

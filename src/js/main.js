@@ -1,632 +1,449 @@
-// Main coordinator script - Cyberpunk Comic Book Rebuild
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { webGLScene } from './webgl.js';
-import { audioSystem } from './audio.js';
+// main.js — V2.0 Orchestrator (clean, modular)
 
-// Register GSAP ScrollTrigger
-gsap.registerPlugin(ScrollTrigger);
+import { AppState }           from '../core/AppState.js';
+import { bus }                from '../core/EventBus.js';
+import { loader }             from '../utils/Loader.js';
+import { initAchievements }   from '../core/AchievementSystem.js';
+import { webGLScene }         from '../three/Scene.js';
+import { audioEngine }        from '../audio/AudioEngine.js';
+import { initCursor, bindInteractiveEvents } from '../ui/Cursor.js';
+import { initHUD, updateFromScroll } from '../ui/HUD.js';
+import { initModals }         from '../ui/Modals.js';
+import { initMobileNav }      from '../ui/MobileNav.js';
+import { initTerminal }       from '../ui/Terminal.js';
+import { initAIAssistant }    from '../ui/AIAssistant.js';
+import { initScrollAnimations, animateHeroEntry } from '../animations/ScrollAnimations.js';
+import { performanceManager } from '../utils/Performance.js';
+import { analytics }          from '../core/Analytics.js';
+import { initSettingsPanel }  from '../ui/SettingsPanel.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Boot progress variables (declared early for scope)
-  let simulatedProgress = 0;
-  let actualProgress = 0;
 
-  // 1. Setup WebGL progress listener first (prevents race condition)
-  webGLScene.onLoadProgress = (progress) => {
-    actualProgress = progress;
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // ── 1. Bootstrap core state ──────────────────────────
+  AppState.init();
+  performanceManager.init();
+  analytics.init();
+  initSettingsPanel();
+
+  // ── 2. Load all data & init scene in parallel ────────
+  let portfolioData = {};
+  const progressRef = { value: 0 };
+
+  // Listen to progress from data loader
+  bus.on('loader:progress', pct => {
+    progressRef.value = Math.round(pct * 0.6); // data = 60% of total
+  });
+
+  webGLScene.onLoadProgress = p => {
+    progressRef.value = Math.min(60 + Math.round(p * 0.4), 100); // scene = 40% of total
   };
 
-  // 2. Initialize WebGL Scene (Grid & Starfield)
+  // Kick off both in parallel
+  const loadPromise = loader.loadAllData().then(data => {
+    portfolioData = data;
+    progressRef.value = 60; // data fully loaded
+  }).catch(e => {
+    console.warn('[V2] Data load failed, using fallback.', e);
+    progressRef.value = 60;
+  });
+
   webGLScene.init('canvas-3d');
 
-  // Dynamic theme colors
-  let cachedThemeColor = '#00e5ff'; // Default Cyber Cyan
+  await loadPromise;
+  const { portfolio, projects, experience, skills, achievements } = portfolioData;
 
-  // 2. Custom cursor trail physics
-  const cursor = document.getElementById('custom-cursor');
-  const follower = document.getElementById('custom-cursor-follower');
-  
-  let mouseX = 0, mouseY = 0;
-  let followerX = 0, followerY = 0;
-  let followerScale = 1.0;
+  // ── 3. Populate DOM from data ─────────────────────────
+  populateDOM(portfolioData);
 
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    // Position cursor
-    cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-  });
+  // ── 4. Boot preloader sequence ────────────────────────
+  await runBootSequence(progressRef);
 
-  function updateFollower() {
-    followerX += (mouseX - followerX) * 0.12;
-    followerY += (mouseY - followerY) * 0.12;
-    
-    follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%) scale(${followerScale}) rotate(45deg)`;
-    
-    requestAnimationFrame(updateFollower);
-  }
-  updateFollower();
 
-  // Hover states for cursor
-  function bindInteractiveEvents() {
-    const interactives = document.querySelectorAll(
-      'button, a, input, textarea, .hud-dot-container, #audio-control-widget, .project-mini-row, .channel-link-btn, .hud-brand-logo-frame'
-    );
-    interactives.forEach(el => {
-      el.removeEventListener('mouseenter', onMouseEnter);
-      el.removeEventListener('mouseleave', onMouseLeave);
-      el.removeEventListener('click', onClick);
+  // ── 5. Init all UI modules ────────────────────────────
+  initCursor();
+  initHUD();
+  initModals();
+  initMobileNav();
+  initScrollAnimations();
+  initTerminal(portfolioData);
+  initAIAssistant(portfolioData);
+  initAchievements(achievements);
+  initAudioWidget();
+  initContactForm(portfolio);
+  initScrollTracking();
 
-      el.addEventListener('mouseenter', onMouseEnter);
-      el.addEventListener('mouseleave', onMouseLeave);
-      el.addEventListener('click', onClick);
-    });
-  }
-
-  function onMouseEnter() {
-    cursor.style.width = '24px';
-    cursor.style.height = '24px';
-    cursor.style.backgroundColor = 'rgba(0, 229, 255, 0.35)'; // Cyan glow
-    followerScale = 1.3;
-    follower.style.borderColor = '#ffffff';
-    follower.style.borderRadius = '50%'; // morph square to circle
-    audioSystem.playHover();
-  }
-
-  function onMouseLeave() {
-    cursor.style.width = '10px';
-    cursor.style.height = '10px';
-    cursor.style.backgroundColor = '#ffffff';
-    followerScale = 1.0;
-    follower.style.borderColor = 'var(--accent-cyan)';
-    follower.style.borderRadius = '0'; // reset to diamond
-  }
-
-  function onClick() {
-    audioSystem.playClick();
-  }
-
+  // ── 6. Entry animation ────────────────────────────────
+  animateHeroEntry();
   bindInteractiveEvents();
 
-  // 3. Immersive boot loader
-  const progressCircle = document.getElementById('progress-circle');
-  const progressText = document.getElementById('loader-percentage-text');
-  const termLog = document.getElementById('boot-terminal-log');
-  const circleLength = 251.32;
+  // ── 7. Start audio on first interaction ───────────────
+  initFirstInteractionAudio();
 
-  // Add terminal text dynamically during boot
-  const termLines = [
-    '<p class="term-line green">[OK] COMIC PROTOCOL SYNCED</p>',
-    '<p class="term-line cyan">[SYS] RENDERING NEO-COMIC ENGINE...</p>',
-    '<p class="term-line pink">[SYS] PARALLAX TEXTURE BUFFERS ONLINE</p>'
-  ];
+  // ── 8. SEO structured data ────────────────────────────
+  injectStructuredData(portfolio);
+});
 
-  const loadInterval = setInterval(() => {
-    if (simulatedProgress < 90) {
-      simulatedProgress += Math.floor(Math.random() * 8) + 3;
-    }
+// ══════════════════════════════════════════
+// DOM POPULATION FROM JSON DATA
+// ══════════════════════════════════════════
+function populateDOM({ portfolio, projects, experience, skills, achievements }) {
+  if (!portfolio) return;
 
-    if (actualProgress < 100 && simulatedProgress > 90) {
-      simulatedProgress = 90;
-    }
-
-    if (actualProgress === 100) {
-      simulatedProgress += 10;
-      if (simulatedProgress >= 100) {
-        simulatedProgress = 100;
-        clearInterval(loadInterval);
-        setTimeout(endPreloader, 600);
-      }
-    }
-
-    // Add log lines at specific intervals
-    if (simulatedProgress > 30 && termLog.children.length === 3) {
-      termLog.innerHTML += termLines[0];
-    } else if (simulatedProgress > 60 && termLog.children.length === 4) {
-      termLog.innerHTML += termLines[1];
-    } else if (simulatedProgress > 85 && termLog.children.length === 5) {
-      termLog.innerHTML += termLines[2];
-    }
-
-    const offset = circleLength - (simulatedProgress * circleLength) / 100;
-    progressCircle.style.strokeDashoffset = offset;
-    progressText.textContent = `${simulatedProgress}%`;
-  }, 75);
-
-  function endPreloader() {
-    const preloader = document.getElementById('preloader');
-    preloader.style.opacity = '0';
-    preloader.style.visibility = 'hidden';
-
-    // Once loader is done, run opening animations for Chapter 0
-    animateHeroEntry();
+  // Hero social links
+  const heroLinks = document.getElementById('hero-social-links');
+  if (heroLinks && portfolio.socials) {
+    heroLinks.innerHTML = portfolio.socials.map(s => `
+      <a href="${s.url}" ${s.external ? 'target="_blank" rel="noopener noreferrer"' : ''} class="channel-link-btn" id="${s.id}">${s.label}</a>
+    `).join('');
   }
 
-  // 4. GSAP Scroll-Triggered Comic Panel Entrance Animations
-  // Important: configure ScrollTrigger to scroller '#scroll-container'
-  ScrollTrigger.defaults({
-    scroller: '#scroll-container'
-  });
+  // About bio panels
+  const aboutShort  = document.getElementById('about-bio-short');
+  const aboutDetail = document.getElementById('modal-about-detail');
+  const aboutPass   = document.getElementById('modal-about-passion');
+  const aboutCollab = document.getElementById('modal-about-collab');
+  if (aboutShort) aboutShort.textContent = portfolio.bio_short || '';
+  if (aboutDetail) aboutDetail.textContent = portfolio.bio_detail || '';
+  if (aboutPass)   aboutPass.textContent  = portfolio.bio_passion || '';
+  if (aboutCollab) aboutCollab.textContent = portfolio.bio_collaboration || '';
 
-  function animateHeroEntry() {
-    const tl = gsap.timeline();
-    
-    const paneLeft = document.querySelector('.hero-comic-grid .pane-left');
-    if (paneLeft) {
-      tl.from(paneLeft, {
-        duration: 0.9,
-        x: -100,
-        opacity: 0,
-        skewX: -5,
-        ease: 'power3.out'
-      });
-    }
-    
-    const paneRight = document.querySelector('.hero-comic-grid .pane-right');
-    if (paneRight) {
-      tl.from(paneRight, {
-        duration: 0.9,
-        x: 100,
-        opacity: 0,
-        skewX: 5,
-        ease: 'power3.out'
-      }, paneLeft ? '-=0.6' : '+=0');
-    }
-    
-    const bubble = document.querySelector('.hero-comic-grid .speech-bubble');
-    if (bubble) {
-      tl.from(bubble, {
-        duration: 0.5,
-        scale: 0,
-        opacity: 0,
-        ease: 'back.out(1.7)'
-      }, '-=0.2');
-    }
-    
-    const sfx = document.querySelector('#sec-0 .sound-fx');
-    if (sfx) {
-      tl.from(sfx, {
-        duration: 0.4,
-        scale: 1.5,
-        opacity: 0,
-        ease: 'bounce.out'
-      }, '-=0.2');
-    }
+  // Projects rows (section)
+  const projRows = document.getElementById('projects-rows');
+  if (projRows && projects) {
+    projRows.innerHTML = projects.map((p, i) => `
+      <div class="project-mini-row" id="row-proj-${i+1}" tabindex="0" role="button" aria-label="Open ${p.title} details">
+        <span class="row-num">${p.index}</span>
+        <div class="row-info">
+          <h4 class="row-title">${p.title}</h4>
+          <p class="row-tags">${p.tags}</p>
+        </div>
+      </div>`).join('');
   }
 
-  // Animate other chapters on scroll
-  const chapters = ['sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5'];
-  
-  chapters.forEach((chapterId) => {
-    const element = document.getElementById(chapterId);
-    if (!element) return;
+  // Experience timeline nodes (section)
+  const expNodes = document.getElementById('experience-nodes');
+  if (expNodes && experience) {
+    expNodes.innerHTML = experience.map(e => `
+      <div class="chronicle-node">
+        <span class="node-date">${e.nodeDate}</span>
+        <p class="node-text"><strong>${e.nodeText}</strong> - ${e.nodeOrg}</p>
+      </div>`).join('');
+  }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: element,
-        start: 'top 65%',
-        toggleActions: 'play none none none'
+  // Skills chart bars
+  const skillChart = document.getElementById('skills-chart');
+  if (skillChart && skills?.categories) {
+    const colorMap = { cyan: 'bg-cyan', pink: 'bg-pink', purple: 'bg-purple' };
+    skillChart.innerHTML = skills.categories.map(c => `
+      <div class="skills-chart-row">
+        <span class="chart-label">${c.chartLabel}</span>
+        <div class="chart-bar">
+          <div class="chart-fill ${colorMap[c.color] || 'bg-cyan'}" data-width="${c.chartWidth}"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Modal: About
+  const modalAboutImg = document.getElementById('modal-about-img');
+  if (modalAboutImg && portfolio.profile_image) {
+    modalAboutImg.src = portfolio.profile_image;
+    modalAboutImg.alt = `${portfolio.name} profile photo`;
+  }
+
+  // Modal: Skills categories
+  const modalSkillsCols = document.getElementById('modal-skills-cols');
+  if (modalSkillsCols && skills?.categories) {
+    modalSkillsCols.innerHTML = skills.categories.map(c => `
+      <div class="modal-comic-panel list-card-panel">
+        <div class="comic-card-border"></div>
+        <div class="modal-panel-content">
+          <div class="card-icon-header">
+            <span class="card-icon">${c.icon}</span>
+            <h4 class="card-title">${c.label}</h4>
+          </div>
+          <p class="card-summary">${c.summary}</p>
+          <div class="comic-badges-group">
+            ${c.skills.map(s => `<span class="tag-badge color-${c.color}">${s.name}</span>`).join('')}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Modal: Skills certifications
+  const certRow = document.getElementById('modal-skills-certs');
+  if (certRow && skills?.certifications) {
+    certRow.innerHTML = skills.certifications.map(c => `<span class="cert-badge">${c.label}</span>`).join('');
+  }
+
+  // Modal: Projects
+  const modalProjects = document.getElementById('modal-projects-grid');
+  if (modalProjects && projects) {
+    modalProjects.innerHTML = projects.map(p => `
+      <div class="modal-comic-panel project-item-panel">
+        <div class="comic-card-border"></div>
+        <div class="modal-project-layout-inner">
+          <div class="modal-project-text">
+            <span class="proj-index-tag">${p.mission}</span>
+            <h4 class="modal-project-title">${p.title}</h4>
+            <p>${p.description}</p>
+            <p class="t-challenge"><strong>Challenge:</strong> ${p.challenge}</p>
+            <p class="t-solution"><strong>Solution:</strong> ${p.solution}</p>
+            <div class="proj-badge-list">
+              ${p.badges.map(b => `<span class="tag-badge color-${b.color}">${b.label}</span>`).join('')}
+            </div>
+            <div class="proj-action-links">
+              ${p.liveUrl ? `<a href="${p.liveUrl}" target="_blank" rel="noopener" class="proj-link-btn">[ LIVE DEMO ]</a>` : ''}
+              ${p.sourceUrl ? `<a href="${p.sourceUrl}" target="_blank" rel="noopener" class="proj-link-btn">[ SOURCE CODE ]</a>` : ''}
+            </div>
+          </div>
+          <div class="modal-project-artwork" style="position:relative;overflow:hidden;">
+            <img src="${p.artwork}" alt="${p.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Modal: Experience timeline
+  const modalExp = document.getElementById('modal-experience-timeline');
+  if (modalExp && experience) {
+    modalExp.innerHTML = experience.map(e => `
+      <div class="timeline-detail-item">
+        <div class="timeline-date-tag ${e.dateTag}">${e.dateRange}</div>
+        <h4 class="timeline-role">${e.role}</h4>
+        <span class="timeline-org">${e.org}</span>
+        <p class="timeline-desc">${e.description}</p>
+      </div>`).join('');
+  }
+
+  // Modal: Achievements list
+  const modalAwards = document.getElementById('modal-awards-list');
+  if (modalAwards && achievements?.awards) {
+    modalAwards.innerHTML = achievements.awards.map(a => `
+      <li>
+        <span class="achievement-icon">${a.icon}</span>
+        <div class="achievement-text">
+          <strong>${a.title}</strong>
+          <p>${a.description}</p>
+        </div>
+      </li>`).join('');
+  }
+
+  // Contact beacon channels
+  const beaconPhone = document.getElementById('beacon-phone');
+  const beaconEmail = document.getElementById('beacon-email');
+  if (beaconPhone && portfolio.contact) beaconPhone.href = portfolio.contact.phone_href;
+  if (beaconEmail && portfolio.contact) beaconEmail.href = portfolio.contact.email_href;
+}
+
+// ══════════════════════════════════════════
+// BOOT SEQUENCE (PRELOADER)
+// ══════════════════════════════════════════
+function runBootSequence(actualProgressRef) {
+  return new Promise(resolve => {
+    const progressCircle = document.getElementById('progress-circle');
+    const progressText   = document.getElementById('loader-percentage-text');
+    const termLog        = document.getElementById('boot-terminal-log');
+    const circleLength   = 251.32;
+    let displayProgress = 0;
+
+    const termLines = [
+      '<p class="term-line green">[OK] COMIC PROTOCOL SYNCED</p>',
+      '<p class="term-line cyan">[LOAD] DEVELOPER PROFILE — VERIFIED</p>',
+      '<p class="term-line purple">[LOAD] PROJECT DATABASE — SYNCING...</p>',
+      '<p class="term-line pink">[OK] FULL ACCESS GRANTED. WELCOME, AGENT.</p>'
+    ];
+
+    // Safety timeout — finish after 12s max regardless
+    const safetyTimeout = setTimeout(() => {
+      clearInterval(updateInterval);
+      endPreloader();
+      resolve();
+    }, 12000);
+
+    const updateInterval = setInterval(() => {
+      const realProgress = actualProgressRef.value;
+      displayProgress = Math.max(displayProgress + 1, realProgress);
+      displayProgress = Math.min(displayProgress, 100);
+
+      // Log lines at milestones
+      if (termLog) {
+        if (displayProgress > 25  && termLog.children.length === 4) termLog.innerHTML += termLines[0];
+        if (displayProgress > 50  && termLog.children.length === 5) termLog.innerHTML += termLines[1];
+        if (displayProgress > 75  && termLog.children.length === 6) termLog.innerHTML += termLines[2];
+        if (displayProgress > 92  && termLog.children.length === 7) termLog.innerHTML += termLines[3];
       }
-    });
 
-    const header = element.querySelector('.chapter-header');
-    if (header) {
-      tl.from(header, {
-        duration: 0.5,
-        y: -30,
-        opacity: 0,
-        skewX: -3,
-        ease: 'power2.out'
-      });
-    }
+      if (progressCircle) progressCircle.style.strokeDashoffset = circleLength - (displayProgress * circleLength) / 100;
+      if (progressText)   progressText.textContent = `${Math.min(displayProgress, 100)}%`;
 
-    const paneLeft = element.querySelector('.pane-left');
-    if (paneLeft) {
-      tl.from(paneLeft, {
-        duration: 0.7,
-        x: -80,
-        opacity: 0,
-        skewX: -2,
-        ease: 'power2.out'
-      }, header ? '-=0.25' : '+=0');
-    }
-
-    const paneRight = element.querySelector('.pane-right');
-    if (paneRight) {
-      tl.from(paneRight, {
-        duration: 0.7,
-        x: 80,
-        opacity: 0,
-        skewX: 2,
-        ease: 'power2.out'
-      }, paneLeft ? '-=0.55' : '+=0');
-    }
-
-    const bubble = element.querySelector('.speech-bubble');
-    if (bubble) {
-      tl.from(bubble, {
-        duration: 0.4,
-        scale: 0,
-        opacity: 0,
-        ease: 'back.out(1.8)'
-      }, '-=0.2');
-    }
-
-    const caption = element.querySelector('.caption-box');
-    if (caption) {
-      tl.from(caption, {
-        duration: 0.4,
-        scale: 0.8,
-        opacity: 0,
-        ease: 'power2.out'
-      }, '-=0.3');
-    }
-
-    const sfx = element.querySelector('.sound-fx');
-    if (sfx) {
-      tl.from(sfx, {
-        duration: 0.4,
-        scale: 1.6,
-        opacity: 0,
-        ease: 'bounce.out'
-      }, '-=0.2');
-    }
+      if (displayProgress >= 100) {
+        clearInterval(updateInterval);
+        clearTimeout(safetyTimeout);
+        setTimeout(() => { endPreloader(); resolve(); }, 500);
+      }
+    }, 40);
   });
+}
 
-  // Specifically animate the skill bars width inside Chapter 2
-  ScrollTrigger.create({
-    trigger: '#sec-2',
-    start: 'top 50%',
-    onEnter: () => {
-      document.querySelectorAll('.chart-fill').forEach(bar => {
-        const w = bar.style.getPropertyValue('--width').trim() || '80%';
-        gsap.to(bar, { width: w, duration: 1.2, ease: 'power2.out' });
-      });
-    }
-  });
 
-  // 5. Scroll Tracking for HUD Navigation & WebGL
+function endPreloader() {
+  const preloader = document.getElementById('preloader');
+  if (preloader) { preloader.style.opacity = '0'; preloader.style.visibility = 'hidden'; }
+}
+
+// ══════════════════════════════════════════
+// SCROLL TRACKING
+// ══════════════════════════════════════════
+function initScrollTracking() {
   const scrollContainer = document.getElementById('scroll-container');
-  const hudDots = document.querySelectorAll('.hud-dot-container');
-  const sections = document.querySelectorAll('.comic-chapter');
+  if (!scrollContainer) return;
 
   scrollContainer.addEventListener('scroll', () => {
-    const scrollTop = scrollContainer.scrollTop;
-    const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-    
-    // Pass scroll progress percentage to Three.js scene (0.0 to 1.0)
-    const pct = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    const pct = scrollHeight - clientHeight > 0 ? scrollTop / (scrollHeight - clientHeight) : 0;
     webGLScene.setScrollPercent(pct);
+    updateFromScroll(scrollTop);
+    analytics.trackScrollDepth(pct);
+  }, { passive: true });
+}
 
-    // Track active chapter for HUD dot updates
-    let currentIdx = 0;
-    const viewHeight = window.innerHeight;
-    
-    sections.forEach((sec, idx) => {
-      const topOffset = sec.offsetTop;
-      if (scrollTop >= topOffset - viewHeight * 0.4) {
-        currentIdx = idx;
-      }
-    });
-
-    hudDots.forEach((dot, idx) => {
-      if (idx === currentIdx) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
-    });
-  });
-
-  // Click handler on HUD navigation dots
-  hudDots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const targetIdx = parseInt(dot.getAttribute('data-target'));
-      const targetSec = document.getElementById(`sec-${targetIdx}`);
-      
-      if (targetSec) {
-        scrollContainer.scrollTo({
-          top: targetSec.offsetTop,
-          behavior: 'smooth'
-        });
-      }
-      
-      audioSystem.init();
-      audioSystem.playClick();
-    });
-  });
-
-  // Click handler on HUD brand logo to scroll back to top (sec-0)
-  const brandLogo = document.querySelector('.hud-brand-logo-frame');
-  if (brandLogo) {
-    brandLogo.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const targetSec = document.getElementById('sec-0');
-      if (targetSec) {
-        scrollContainer.scrollTo({
-          top: targetSec.offsetTop,
-          behavior: 'smooth'
-        });
-      }
-      audioSystem.init();
-      audioSystem.playClick();
-    });
-  }
-
-  // 6. Audio Widget control
-  const audioWidget = document.getElementById('audio-control-widget');
+// ══════════════════════════════════════════
+// AUDIO WIDGET
+// ══════════════════════════════════════════
+function initAudioWidget() {
+  const widget    = document.getElementById('audio-control-widget');
   const audioText = document.getElementById('audio-text');
+  const volSlider = document.getElementById('volume-slider');
 
-  function setAudioWidgetState(isPlaying) {
-    if (isPlaying) {
-      audioWidget.classList.add('playing');
-      audioText.textContent = "Sound On";
-      audioText.style.color = "var(--accent-cyan)";
+  const setWidgetState = (playing) => {
+    if (playing) {
+      widget?.classList.add('playing');
+      widget?.setAttribute('aria-pressed', 'true');
+      if (audioText) { audioText.textContent = 'Sound On'; audioText.style.color = 'var(--accent-cyan)'; }
     } else {
-      audioWidget.classList.remove('playing');
-      audioText.textContent = "Sound Off";
-      audioText.style.color = "var(--text-muted)";
-    }
-  }
-
-  audioWidget.addEventListener('click', (e) => {
-    e.stopPropagation();
-    audioSystem.init();
-    const isPlaying = audioSystem.toggle();
-    setAudioWidgetState(isPlaying);
-  });
-
-  // Trigger audio on first interaction
-  let hasInteractedForAudio = false;
-  const startAudioOnFirstInteraction = () => {
-    if (hasInteractedForAudio) return;
-    hasInteractedForAudio = true;
-
-    audioSystem.init();
-    audioSystem.startAmbient();
-    setAudioWidgetState(true);
-
-    window.removeEventListener('click', startAudioOnFirstInteraction);
-    window.removeEventListener('keydown', startAudioOnFirstInteraction);
-    window.removeEventListener('touchstart', startAudioOnFirstInteraction);
-    if (scrollContainer) {
-      scrollContainer.removeEventListener('scroll', startAudioOnFirstInteraction);
+      widget?.classList.remove('playing');
+      widget?.setAttribute('aria-pressed', 'false');
+      if (audioText) { audioText.textContent = 'Sound Off'; audioText.style.color = 'var(--text-muted)'; }
     }
   };
 
-  window.addEventListener('click', startAudioOnFirstInteraction);
-  window.addEventListener('keydown', startAudioOnFirstInteraction);
-  window.addEventListener('touchstart', startAudioOnFirstInteraction);
-  if (scrollContainer) {
-    scrollContainer.addEventListener('scroll', startAudioOnFirstInteraction);
+  // Restore saved state
+  if (volSlider) {
+    volSlider.value = AppState.state.audioVolume !== undefined ? AppState.state.audioVolume : 0.7;
   }
 
-  // 7. Modals opening & closing coordination
-  const modalMap = [
-    { triggerId: 'btn-open-about', modalId: 'modal-about' },
-    { triggerId: 'btn-open-skills', modalId: 'modal-skills' },
-    { triggerId: 'btn-open-projects', modalId: 'modal-projects' },
-    { triggerId: 'btn-open-experience', modalId: 'modal-experience' },
-    { triggerId: 'row-proj-1', modalId: 'modal-projects' },
-    { triggerId: 'row-proj-2', modalId: 'modal-projects' },
-    { triggerId: 'row-proj-3', modalId: 'modal-projects' }
-  ];
-
-  modalMap.forEach(item => {
-    const trigger = document.getElementById(item.triggerId);
-    const modal = document.getElementById(item.modalId);
-    
-    if (trigger && modal) {
-      trigger.addEventListener('click', () => {
-        modal.classList.add('active');
-        scrollContainer.style.overflowY = 'hidden'; // stop page scrolling
-        audioSystem.playClick();
-      });
-    }
-  });
-
-  const modalCloseBtns = document.querySelectorAll('.modal-close-trigger');
-  modalCloseBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modalId = btn.getAttribute('data-close');
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.remove('active');
-        scrollContainer.style.overflowY = 'auto'; // restore scrolling
-        audioSystem.playClick();
-      }
-    });
-  });
-
-  // ESC key to close modal
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const activeModal = document.querySelector('.comic-detail-modal.active');
-      if (activeModal) {
-        activeModal.classList.remove('active');
-        scrollContainer.style.overflowY = 'auto';
-        audioSystem.playClick();
-      }
-    }
-  });
-
-  // Clicking outside modal page content to close it
-  document.querySelectorAll('.comic-detail-modal').forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal || e.target.classList.contains('modal-hologram-wrapper')) {
-        modal.classList.remove('active');
-        scrollContainer.style.overflowY = 'auto';
-        audioSystem.playClick();
-      }
-    });
-  });
-
-  // Ambient Cursor particle trail (Canvas 2D)
-  const trailCanvas = document.createElement('canvas');
-  trailCanvas.id = 'cursor-trail-canvas';
-  trailCanvas.style.position = 'fixed';
-  trailCanvas.style.top = '0';
-  trailCanvas.style.left = '0';
-  trailCanvas.style.width = '100vw';
-  trailCanvas.style.height = '100vh';
-  trailCanvas.style.pointerEvents = 'none';
-  trailCanvas.style.zIndex = '10000';
-  document.body.appendChild(trailCanvas);
-
-  const trailCtx = trailCanvas.getContext('2d');
-  let trailParticles = [];
-
-  window.addEventListener('resize', () => {
-    trailCanvas.width = window.innerWidth;
-    trailCanvas.height = window.innerHeight;
-  });
-  trailCanvas.width = window.innerWidth;
-  trailCanvas.height = window.innerHeight;
-
-  let lastMoveTime = 0;
-  window.addEventListener('mousemove', (e) => {
-    const now = performance.now();
-    if (now - lastMoveTime < 16) return;
-    lastMoveTime = now;
-
-    trailParticles.push({
-      x: e.clientX,
-      y: e.clientY,
-      size: Math.random() * 4 + 2,
-      life: 1.0,
-      decay: 0.02 + Math.random() * 0.015,
-      color: cachedThemeColor,
-      vx: (Math.random() - 0.5) * 1.5,
-      vy: (Math.random() - 0.5) * 1.5
-    });
-  });
-
-  function animateTrailParticles() {
-    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-
-    if (trailParticles.length === 0) {
-      requestAnimationFrame(animateTrailParticles);
-      return;
-    }
-
-    for (let i = trailParticles.length - 1; i >= 0; i--) {
-      const p = trailParticles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= p.decay;
-
-      if (p.life <= 0) {
-        trailParticles.splice(i, 1);
-        continue;
-      }
-
-      // Draw square particle trails to match comic layout
-      trailCtx.globalAlpha = p.life * 0.45;
-      trailCtx.fillStyle = p.color;
-      
-      // Draw tilted small square particles
-      trailCtx.save();
-      trailCtx.translate(p.x, p.y);
-      trailCtx.rotate(p.life * Math.PI);
-      const sz = p.size * p.life;
-      trailCtx.fillRect(-sz/2, -sz/2, sz, sz);
-      trailCtx.restore();
-    }
-
-    trailCtx.globalAlpha = 1.0;
-    requestAnimationFrame(animateTrailParticles);
+  if (AppState.state.audioEnabled) {
+    setWidgetState(true);
   }
-  animateTrailParticles();
 
-  // Listen for form transmission success to play a sound
-  window.addEventListener('transmission-success', () => {
-    audioSystem.playClick();
-    setTimeout(() => audioSystem.playClick(), 120); // Double-chirp for success effect
+  widget?.addEventListener('click', e => {
+    e.stopPropagation();
+    audioEngine.init();
+    const playing = audioEngine.toggle();
+    setWidgetState(playing);
   });
 
-  // Listen for form transmission failure to play an error sound
-  window.addEventListener('transmission-error', () => {
-    // Glitchy triple-stutter for failure effect
-    audioSystem.playClick();
-    setTimeout(() => audioSystem.playClick(), 60);
-    setTimeout(() => audioSystem.playClick(), 120);
+  volSlider?.addEventListener('input', e => {
+    audioEngine.setVolume(parseFloat(e.target.value));
   });
 
-  // 8. Contact Form submission using native fetch (Formspree, Web3Forms, or Custom Backend)
-  const contactForm = document.getElementById('portfolio-contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const form = e.target;
-      const submitBtn = document.getElementById('btn-submit-contact');
-      if (!submitBtn) return;
-      const originalBtnText = submitBtn.innerHTML;
-      
-      submitBtn.innerHTML = '[ TRANSMITTING... ]';
-      submitBtn.style.pointerEvents = 'none';
-      
-      // Web3Forms Endpoint
-      const formEndpoint = "https://api.web3forms.com/submit";
-      // Paste your Web3Forms Access Key here (e.g. "a5b82c3c-...")
-      const accessKey = "f491cccd-442f-4a6d-a329-6bf9a9618b99";
-      
-      // Demo Mode: If the key is the placeholder, simulate a successful send for testing.
-      if (accessKey === "YOUR_ACCESS_KEY_HERE") {
-        console.warn("DEMO MODE: Web3Forms Access Key is set to default placeholder. Simulating successful send.");
-        setTimeout(() => {
-          submitBtn.innerHTML = '[ TRANSMISSION SENT ]';
-          form.reset();
-          
-          // Dispatch event to trigger success audio effect
-          window.dispatchEvent(new CustomEvent('transmission-success'));
-          
-          setTimeout(() => {
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.style.pointerEvents = 'auto';
-          }, 3000);
-        }, 1500);
-        return;
+  // Bus events for external audio toggles (from terminal)
+  bus.on('audio:toggle', () => {
+    audioEngine.init();
+    const playing = audioEngine.toggle();
+    setWidgetState(playing);
+  });
+}
+
+function initFirstInteractionAudio() {
+  let interacted = false;
+  const start = () => {
+    if (interacted) return;
+    interacted = true;
+    if (AppState.state.audioEnabled) {
+      audioEngine.init();
+      audioEngine.startAmbient();
+    }
+    ['click', 'keydown', 'touchstart'].forEach(ev => window.removeEventListener(ev, start));
+    const sc = document.getElementById('scroll-container');
+    sc?.removeEventListener('scroll', start);
+  };
+  ['click', 'keydown', 'touchstart'].forEach(ev => window.addEventListener(ev, start));
+  document.getElementById('scroll-container')?.addEventListener('scroll', start, { passive: true });
+}
+
+// ══════════════════════════════════════════
+// CONTACT FORM
+// ══════════════════════════════════════════
+function initContactForm(portfolio) {
+  const form = document.getElementById('portfolio-contact-form');
+  const resumeLink = document.getElementById('link-resume');
+  const resumeModalLink = document.getElementById('link-resume-modal');
+
+  resumeLink?.addEventListener('click', () => {
+    analytics.trackResumeDownload();
+  });
+  resumeModalLink?.addEventListener('click', () => {
+    analytics.trackResumeDownload();
+  });
+
+  if (!form) return;
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('btn-submit-contact');
+    if (!submitBtn) return;
+    const original = submitBtn.innerHTML;
+    submitBtn.innerHTML = '[ TRANSMITTING... ]';
+    submitBtn.style.pointerEvents = 'none';
+
+    const accessKey = 'f491cccd-442f-4a6d-a329-6bf9a9618b99';
+    const formData  = new FormData(form);
+    formData.append('access_key', accessKey);
+
+    try {
+      const resp = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+      const data = await resp.json();
+      if (data.success) {
+        submitBtn.innerHTML = '[ TRANSMISSION SENT ✓ ]';
+        form.reset();
+        analytics.trackContactSubmission();
+        bus.emit('audio:click');
+        setTimeout(() => audioEngine.playClick(), 120);
+      } else {
+        throw new Error(data.message);
       }
-      
-      const formData = new FormData(form);
-      formData.append("access_key", accessKey);
-      
-      fetch(formEndpoint, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          submitBtn.innerHTML = '[ TRANSMISSION SENT ]';
-          form.reset();
-          
-          // Dispatch event to trigger success audio effect
-          window.dispatchEvent(new CustomEvent('transmission-success'));
-          
-          setTimeout(() => {
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.style.pointerEvents = 'auto';
-          }, 3000);
-        } else {
-          throw new Error(data.message || 'Server returned error status');
-        }
-      })
-      .catch((error) => {
-        console.error('Submission Error:', error);
-        
-        // Dispatch event to trigger error audio effect
-        window.dispatchEvent(new CustomEvent('transmission-error'));
-        
-        submitBtn.innerHTML = '[ TRANSMISSION FAILED ]';
-        setTimeout(() => {
-          submitBtn.innerHTML = originalBtnText;
-          submitBtn.style.pointerEvents = 'auto';
-        }, 3000);
-      });
-    });
-  }
-});
+    } catch(err) {
+      console.error(err);
+      submitBtn.innerHTML = '[ TRANSMISSION FAILED ]';
+      bus.emit('audio:click');
+      setTimeout(() => audioEngine.playClick(), 60);
+      setTimeout(() => audioEngine.playClick(), 120);
+    }
+
+    setTimeout(() => { submitBtn.innerHTML = original; submitBtn.style.pointerEvents = 'auto'; }, 3500);
+  });
+}
+
+// ══════════════════════════════════════════
+// JSON-LD STRUCTURED DATA (SEO)
+// ══════════════════════════════════════════
+function injectStructuredData(portfolio) {
+  if (!portfolio) return;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: portfolio.name,
+    jobTitle: portfolio.title,
+    description: portfolio.bio_short,
+    email: portfolio.contact?.email,
+    telephone: portfolio.contact?.phone,
+    url: portfolio.seo?.canonical || window.location.href,
+    sameAs: (portfolio.socials || []).filter(s => s.external).map(s => s.url)
+  };
+  const script = document.createElement('script');
+  script.type  = 'application/ld+json';
+  script.text  = JSON.stringify(schema, null, 2);
+  document.head.appendChild(script);
+}

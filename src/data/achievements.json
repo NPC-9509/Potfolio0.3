@@ -1,0 +1,63 @@
+{
+  "achievements": [
+    {
+      "id": "first-contact",
+      "icon": "📡",
+      "title": "FIRST CONTACT",
+      "description": "Visited the Transmission Beacon.",
+      "color": "cyan"
+    },
+    {
+      "id": "code-archaeology",
+      "icon": "🏛️",
+      "title": "CODE ARCHAEOLOGY",
+      "description": "Opened all 4 classified log archives.",
+      "color": "purple"
+    },
+    {
+      "id": "terminal-hacker",
+      "icon": "💻",
+      "title": "TERMINAL HACKER",
+      "description": "Accessed the developer terminal.",
+      "color": "green"
+    },
+    {
+      "id": "speed-demon",
+      "icon": "🏍️",
+      "title": "SPEED DEMON",
+      "description": "Clicked the RTR bike logo 5 times.",
+      "color": "pink"
+    },
+    {
+      "id": "ghost-protocol",
+      "icon": "👻",
+      "title": "GHOST PROTOCOL",
+      "description": "Found the AI system guide.",
+      "color": "yellow"
+    },
+    {
+      "id": "sudo-hire",
+      "icon": "🎉",
+      "title": "SUDO HIRE MUKUL",
+      "description": "You ran the secret terminal command. Smart choice.",
+      "color": "cyan"
+    }
+  ],
+  "awards": [
+    {
+      "icon": "🏆",
+      "title": "Volunteering Recognition",
+      "description": "Awarded for excellence in university community organizations and cultural event setups."
+    },
+    {
+      "icon": "⚡",
+      "title": "Inter-college Cultural Winner",
+      "description": "Recognized for outstanding creative leadership in digital media competitions."
+    },
+    {
+      "icon": "⚽",
+      "title": "Football Championship Badge",
+      "description": "Certificate of Excellence — Inter-college Football Tournament."
+    }
+  ]
+}

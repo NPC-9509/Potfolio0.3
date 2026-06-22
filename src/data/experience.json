@@ -1,0 +1,35 @@
+[
+  {
+    "id": "exp-1",
+    "dateRange": "Feb 2026 — May 2026",
+    "dateTag": "bg-purple",
+    "role": "Front-End Dev & Social Media Intern",
+    "org": "Swaastik Solutions",
+    "description": "Engineered custom responsive interfaces and UI layouts. Managed Meta Ads target accounts, constructed vector graphics inside Canva, and drove organic search visibility optimizations.",
+    "nodeDate": "2026",
+    "nodeText": "Development & Marketing Intern",
+    "nodeOrg": "Swaastik Solutions"
+  },
+  {
+    "id": "exp-2",
+    "dateRange": "Aug 2024 — Jun 2025",
+    "dateTag": "bg-cyan",
+    "role": "Digital Content & Website Manager",
+    "org": "Parul University",
+    "description": "Maintained core university website interfaces. Monitored traffic flow dashboards via Google Analytics, optimized load layouts, and collaborated with cybersecurity teams to prevent interface exploits.",
+    "nodeDate": "2024-2025",
+    "nodeText": "Website & Content Manager",
+    "nodeOrg": "Parul University"
+  },
+  {
+    "id": "exp-3",
+    "dateRange": "Education // 2020 — 2025",
+    "dateTag": "bg-pink",
+    "role": "Integrated MCA (Specialization: Cybersecurity)",
+    "org": "Parul University",
+    "description": "Completed master computer science credentials with a focus on system defenses, cryptography protocols, fullstack script writing, and secure layout design patterns.",
+    "nodeDate": "MCA 2025",
+    "nodeText": "Integrated MCA (Cybersecurity)",
+    "nodeOrg": "Parul University"
+  }
+]
