@@ -1,7 +1,8 @@
-// vite.config.js
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  plugins: [react()],
   root: './',
   publicDir: 'public',
   build: {
@@ -13,6 +14,7 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('three')) return 'vendor-three';
             if (id.includes('gsap')) return 'vendor-gsap';
+            if (id.includes('framer-motion')) return 'vendor-framer';
             return 'vendor-core';
           }
         }
