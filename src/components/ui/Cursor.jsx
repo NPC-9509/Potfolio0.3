@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { useApp } from '../../contexts/AppContext.jsx';
+import { bus } from '../../contexts/EventBus.js';
 
 export default function Cursor() {
   const cursorRef = useRef(null);
@@ -92,9 +93,14 @@ export default function Cursor() {
     };
     requestAnimationFrame(updateFollower);
 
+    const unsubHoverIn = bus.on('cursor:hover-in', onHoverIn);
+    const unsubHoverOut = bus.on('cursor:hover-out', onHoverOut);
+
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       observer.disconnect();
+      unsubHoverIn();
+      unsubHoverOut();
       document.querySelectorAll(interactiveSelector).forEach(el => {
         el.removeEventListener('mouseenter', onHoverIn);
         el.removeEventListener('mouseleave', onHoverOut);

@@ -114,17 +114,7 @@ export default function ThreeScene({ quality, currentSection, scrollPercent, red
             hit.material.color.setHex(0xffffff); // glow white
           }
           document.body.style.cursor = 'pointer';
-          const cursor = document.getElementById('custom-cursor');
-          const follower = document.getElementById('custom-cursor-follower');
-          if (cursor) {
-            cursor.style.width = '24px';
-            cursor.style.height = '24px';
-            cursor.style.backgroundColor = 'rgba(0, 229, 255, 0.35)';
-          }
-          if (follower) {
-            follower.style.borderColor = '#ffffff';
-            follower.style.borderRadius = '50%';
-          }
+          bus.emit('cursor:hover-in');
           bus.emit('audio:hover');
         }
       } else {
@@ -140,17 +130,7 @@ export default function ThreeScene({ quality, currentSection, scrollPercent, red
         }
         hoveredMeshRef.current = null;
         document.body.style.cursor = 'default';
-        const cursor = document.getElementById('custom-cursor');
-        const follower = document.getElementById('custom-cursor-follower');
-        if (cursor) {
-          cursor.style.width = '10px';
-          cursor.style.height = '10px';
-          cursor.style.backgroundColor = '#ffffff';
-        }
-        if (follower) {
-          follower.style.borderColor = '#00e5ff';
-          follower.style.borderRadius = '0';
-        }
+        bus.emit('cursor:hover-out');
       }
     };
 
