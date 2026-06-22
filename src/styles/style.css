@@ -2286,10 +2286,15 @@ textarea.form-group-input {
   }
   .mob-nav-label {
     font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 0.06em;
+    font-size: 0.48rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     font-weight: 600;
+  }
+
+  .mob-nav-btn[data-action="terminal"] .mob-nav-icon,
+  .mob-nav-btn[data-action="ai"] .mob-nav-icon {
+    font-size: 0.9rem;
   }
 
   /* Adjust for mobile nav bar height */

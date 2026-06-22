@@ -3,7 +3,6 @@
 import { bus } from '../core/EventBus.js';
 import { navigateTo } from './HUD.js';
 import { AppState } from '../core/AppState.js';
-import { openTerminal, closeTerminal } from './Terminal.js';
 
 const NAV_ITEMS = [
   { label: 'Home',      icon: '⬡', target: 0, action: 'nav' },
@@ -12,6 +11,8 @@ const NAV_ITEMS = [
   { label: 'Projects',  icon: '◆', target: 3, action: 'nav' },
   { label: 'Timeline',  icon: '◎', target: 4, action: 'nav' },
   { label: 'Contact',   icon: '▣', target: 5, action: 'nav' },
+  { label: 'Terminal',  icon: '>_', target: null, action: 'terminal' },
+  { label: 'AI Guide',  icon: '◈', target: null, action: 'ai' },
 ];
 
 let navEl;
@@ -34,7 +35,7 @@ export function initMobileNav() {
     btn.addEventListener('click', () => {
       const action = btn.getAttribute('data-action');
       if (action === 'terminal') {
-        openTerminal();
+        bus.emit('terminal:open');
         return;
       }
       if (action === 'ai') {
