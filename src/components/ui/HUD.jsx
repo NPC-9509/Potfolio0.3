@@ -96,7 +96,7 @@ export default function HUD() {
       {sections.map((sec) => (
         <div
           key={sec.target}
-          className={`hud-dot-container flex items-center gap-4 cursor-pointer relative ${sec.target === state.currentSection ? 'active' : ''}`}
+          className={`hud-dot-container group flex items-center gap-4 cursor-pointer relative ${sec.target === state.currentSection ? 'active' : ''}`}
           data-target={sec.target}
           onClick={() => { navigateTo(sec.target); bus.emit('audio:click'); }}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigateTo(sec.target); }}}
@@ -104,8 +104,8 @@ export default function HUD() {
           role="button"
           aria-label={`Go to ${sec.label}`}
         >
-          <div className="w-[10px] h-[10px] border-[1.5px] border-text-muted rotate-45 bg-transparent transition-all duration-300" />
-          <span className="font-mono text-[0.7rem] text-text-muted opacity-0 -translate-x-2.5 transition-all duration-300 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-accent-cyan">
+          <div className="hud-dot w-[10px] h-[10px] border-[1.5px] border-text-muted rotate-45 bg-transparent transition-all duration-300" />
+          <span className="hud-label font-mono text-[0.7rem] text-text-muted opacity-0 -translate-x-2.5 transition-all duration-300 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-accent-cyan">
             {sec.label}
           </span>
         </div>

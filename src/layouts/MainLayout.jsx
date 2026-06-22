@@ -23,6 +23,9 @@ import ProjectsModal from '../modals/ProjectsModal.jsx';
 import ExperienceModal from '../modals/ExperienceModal.jsx';
 import SettingsModal from '../modals/SettingsModal.jsx';
 import ResumeRoomModal from '../modals/ResumeRoomModal.jsx';
+import Button from '../components/ui/Button.jsx';
+import ScrollReveal from '../components/ui/ScrollReveal.jsx';
+import Footer from '../components/ui/Footer.jsx';
 
 export default function MainLayout({ portfolioData }) {
   const { state } = useApp();
@@ -51,36 +54,51 @@ export default function MainLayout({ portfolioData }) {
       <AIAssistant portfolioData={portfolioData} />
 
       <div className="hud-action-buttons-group fixed bottom-8 left-8 z-[100] flex gap-3">
-        <button
+        <Button
           id="terminal-open-btn"
+          variant="outline"
           className="w-11 h-11 bg-[rgba(12,4,28,0.5)] backdrop-blur-md border border-accent-green/40 text-accent-green font-mono text-base font-bold rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-[0_4px_12px_rgba(0,255,102,0.1)] hover:bg-accent-green hover:text-black hover:shadow-[0_0_15px_rgba(0,255,102,0.45)]"
           onClick={() => bus.emit('terminal:open')}
           aria-label="Open developer terminal"
           title="Open Terminal [Ctrl+`]"
         >
           <span aria-hidden="true">&gt;_</span>
-        </button>
-        <button
+        </Button>
+        <Button
           id="settings-open-btn"
+          variant="outline"
           className="w-11 h-11 bg-[rgba(12,4,28,0.5)] backdrop-blur-md border border-accent-purple/40 text-accent-purple font-mono text-base font-bold rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-[0_4px_12px_rgba(189,90,247,0.1)] hover:bg-accent-purple hover:text-black hover:shadow-[0_0_15px_rgba(189,90,247,0.45)]"
           onClick={() => bus.emit('modal:open', 'modal-settings')}
           aria-label="Open settings panel"
           title="Open Settings Panel"
         >
           <span aria-hidden="true">⚙</span>
-        </button>
+        </Button>
       </div>
 
       <main id="scroll-container" className="absolute top-0 left-0 w-full h-full overflow-y-auto overflow-x-hidden z-[5] scroll-smooth">
         <a className="skip-nav fixed -top-[100px] left-4 bg-accent-cyan text-black px-4 py-2 font-mono text-sm font-bold z-[99999] no-underline transition-all duration-200 focus:top-4"
           href="#scroll-container">Skip to main content</a>
 
-        <HeroSection portfolio={portfolio} />
-        <AboutSection portfolio={portfolio} />
-        <SkillsSection skills={skills} />
-        <ProjectsSection projects={projects} />
-        <ExperienceSection experience={experience} />
-        <ContactSection portfolio={portfolio} />
+        <ScrollReveal className="w-full">
+          <HeroSection portfolio={portfolio} />
+        </ScrollReveal>
+        <ScrollReveal className="w-full">
+          <AboutSection portfolio={portfolio} />
+        </ScrollReveal>
+        <ScrollReveal className="w-full">
+          <SkillsSection skills={skills} />
+        </ScrollReveal>
+        <ScrollReveal className="w-full">
+          <ProjectsSection projects={projects} />
+        </ScrollReveal>
+        <ScrollReveal className="w-full">
+          <ExperienceSection experience={experience} />
+        </ScrollReveal>
+        <ScrollReveal className="w-full">
+          <ContactSection portfolio={portfolio} />
+        </ScrollReveal>
+        <Footer />
       </main>
 
       <ModalManager modals={[

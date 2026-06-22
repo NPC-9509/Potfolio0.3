@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { bus } from '../../contexts/EventBus.js';
 import { useApp } from '../../contexts/AppContext.jsx';
+import Button from './Button.jsx';
 
 const ASCII_LOGO = `
 ███╗   ███╗██╗   ██╗██╗  ██╗██╗   ██╗██╗     
@@ -305,11 +306,14 @@ Memory diagnostics cleared. Security bypass established.
           </span>
           <div className="terminal-controls flex items-center gap-3">
             <kbd className="terminal-shortcut font-mono text-[0.65rem] border border-white/10 px-1 py-0.5 text-text-muted rounded-sm">Ctrl+`</kbd>
-            <button
+            <Button
+              variant="ghost"
               className="terminal-close-btn bg-none border border-accent-pink text-accent-pink text-sm w-7 h-7 flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-accent-pink hover:text-black"
               onClick={closeTerminal}
               aria-label="Close terminal"
-            >✕</button>
+            >
+              ✕
+            </Button>
           </div>
         </div>
 
@@ -329,7 +333,7 @@ Memory diagnostics cleared. Security bypass established.
           <input
             ref={inputRef}
             type="text"
-            className="terminal-input flex-1 bg-none border-none outline-none text-white font-mono text-[0.82rem] caret-accent-green"
+            className="terminal-input flex-1 bg-transparent border-none outline-none text-white font-mono text-[0.82rem] caret-accent-green"
             placeholder="type a command..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}

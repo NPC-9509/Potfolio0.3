@@ -2,6 +2,24 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { useApp } from '../../contexts/AppContext.jsx';
 
+const ASSETS_TO_PRELOAD = [
+  'assets/comic_hero.png',
+  'assets/comic_skills.png',
+  'assets/comic_projects.png',
+  'assets/comic_experience.png',
+  'assets/comic_contact.png',
+  'assets/comic_bike.png'
+];
+
+const preloadImage = (src) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = resolve;
+    img.onerror = resolve; // Continue on failure so layout doesn't freeze
+  });
+};
+
 export default function Preloader({ onComplete, data }) {
   const preloaderRef = useRef(null);
   const progressCircleRef = useRef(null);
@@ -31,6 +49,12 @@ export default function Preloader({ onComplete, data }) {
       '<p class="term-line pink">[OK] FULL ACCESS GRANTED. WELCOME, AGENT.</p>'
     ];
     let progressVal = 0;
+    let assetsLoaded = false;
+
+    // Start preloading images
+    Promise.all(ASSETS_TO_PRELOAD.map(preloadImage)).then(() => {
+      assetsLoaded = true;
+    });
 
     const safetyTimeout = setTimeout(() => {
       clearInterval(updateInterval);
@@ -38,23 +62,28 @@ export default function Preloader({ onComplete, data }) {
     }, 12000);
 
     const updateInterval = setInterval(() => {
-      progressVal = Math.min(progressVal + 1, 100);
+      // Progress increments smoothly but halts at 92% if assets are still preloading
+      const cap = assetsLoaded ? 100 : 92;
+      progressVal = Math.min(progressVal + 1.25, cap);
       displayProgress = Math.max(displayProgress, progressVal);
       displayProgress = Math.min(displayProgress, 100);
 
+      // Round to nearest integer for display
+      const displayInt = Math.floor(displayProgress);
+
       if (termLogRef.current) {
         const children = termLogRef.current.children.length;
-        if (displayProgress > 25 && children === 4) termLogRef.current.innerHTML += termLines[0];
-        if (displayProgress > 50 && children === 5) termLogRef.current.innerHTML += termLines[1];
-        if (displayProgress > 75 && children === 6) termLogRef.current.innerHTML += termLines[2];
-        if (displayProgress > 92 && children === 7) termLogRef.current.innerHTML += termLines[3];
+        if (displayInt > 25 && children === 4) termLogRef.current.innerHTML += termLines[0];
+        if (displayInt > 50 && children === 5) termLogRef.current.innerHTML += termLines[1];
+        if (displayInt > 75 && children === 6) termLogRef.current.innerHTML += termLines[2];
+        if (displayInt > 92 && children === 7) termLogRef.current.innerHTML += termLines[3];
       }
 
       if (progressCircleRef.current) {
         progressCircleRef.current.style.strokeDashoffset = circleLength - (displayProgress * circleLength) / 100;
       }
       if (progressTextRef.current) {
-        progressTextRef.current.textContent = `${Math.min(displayProgress, 100)}%`;
+        progressTextRef.current.textContent = `${displayInt}%`;
       }
 
       if (displayProgress >= 100) {
@@ -62,7 +91,7 @@ export default function Preloader({ onComplete, data }) {
         clearTimeout(safetyTimeout);
         setTimeout(() => endPreloader(), 500);
       }
-    }, 40);
+    }, 30);
 
     return () => {
       clearInterval(updateInterval);

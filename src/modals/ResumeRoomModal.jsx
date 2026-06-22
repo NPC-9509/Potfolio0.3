@@ -1,13 +1,19 @@
 import React from 'react';
 import { bus } from '../contexts/EventBus.js';
+import Button from '../components/ui/Button.jsx';
 
 export default function ResumeRoomModal() {
   return (
     <div className="comic-detail-modal" id="modal-resume-room" role="dialog" aria-modal="true" aria-label="Interactive Resume Room" aria-hidden="true">
       <div className="modal-hologram-wrapper w-full max-w-[1000px] relative">
-        <button className="modal-close-trigger absolute top-5 right-6 bg-[rgba(12,4,28,0.5)] backdrop-blur-md text-text-muted border border-white/10 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-[100] transition-all duration-300 hover:scale-105 hover:rotate-90 hover:text-accent-pink hover:border-accent-pink/40 hover:shadow-[0_0_15px_rgba(255,42,133,0.25)]"
-          data-close="modal-resume-room" aria-label="Close Resume Room modal"
-          onClick={() => bus.emit('modal:close', 'modal-resume-room')}>✕</button>
+        <Button 
+          variant="ghost"
+          className="modal-close-trigger absolute top-5 right-6 bg-[rgba(12,4,28,0.5)] backdrop-blur-md text-text-muted border border-white/10 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-[100] transition-all duration-300 hover:scale-105 hover:rotate-90 hover:text-accent-pink hover:border-accent-pink/40 hover:shadow-[0_0_15px_rgba(255,42,133,0.25)]"
+          aria-label="Close Resume Room modal"
+          onClick={() => bus.emit('modal:close', 'modal-resume-room')}
+        >
+          ✕
+        </Button>
         <div className="modal-comic-book-page modal-glass px-[3.8rem] py-12 rounded-xl overflow-y-auto max-h-[75vh]">
           <div className="modal-comic-header border-b border-white/15 pb-5 mb-8">
             <span className="chapter-number font-mono text-xs text-accent-pink block mb-1">LOGS: DRIVER // RESUME MODULE</span>
@@ -39,10 +45,16 @@ export default function ResumeRoomModal() {
                   </ul>
                 </div>
                 <div className="resume-actions-group mt-4">
-                  <a href="/resume.pdf" download
-                    className="comic-btn-premium inline-glow block w-full text-center no-underline inline-flex items-center justify-center gap-4 bg-accent-cyan/[0.05] backdrop-blur-sm text-accent-cyan border border-accent-cyan/40 px-9 py-4 font-mono text-xs font-bold tracking-widest transition-all duration-300 shadow-[4px_4px_0_#00e5ff] uppercase hover:bg-accent-cyan hover:text-black hover:shadow-[0_0_20px_rgba(0,229,255,0.45)] hover:border-accent-cyan"
+                  <Button 
+                    href="/resume.pdf" 
+                    download={true}
+                    variant="primary" 
                     id="link-resume-modal"
-                  >[ DOWNLOAD RESUME PDF ]</a>
+                    aria-label="Download Resume PDF"
+                    className="w-full text-center inline-flex justify-center"
+                  >
+                    Download Resume PDF
+                  </Button>
                 </div>
               </div>
             </div>
@@ -52,3 +64,4 @@ export default function ResumeRoomModal() {
     </div>
   );
 }
+

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { bus } from '../../contexts/EventBus.js';
 import { useApp } from '../../contexts/AppContext.jsx';
+import Button from './Button.jsx';
 
 const CHIPS_TEMPLATES = {
   0: ["Who is Mukul?", "Show me projects", "Open developer terminal"],
@@ -120,12 +121,27 @@ export default function AIAssistant({ portfolioData }) {
     setIsOpen(false);
   }, []);
 
+  useEffect(() => {
+    const handleToggle = () => {
+      if (isOpen) {
+        close();
+      } else {
+        open();
+      }
+    };
+    bus.on('assistant:toggle', handleToggle);
+    return () => {
+      bus.off('assistant:toggle', handleToggle);
+    };
+  }, [isOpen, open, close]);
+
   const currentChips = CHIPS_TEMPLATES[state.currentSection] || CHIPS_TEMPLATES[0];
 
   return (
     <div id="ai-assistant-widget" className="fixed bottom-24 right-8 z-10">
-      <button
+      <Button
         id="ai-toggle-btn"
+        variant="ghost"
         className="w-[52px] h-[52px] bg-[rgba(12,4,28,0.6)] backdrop-blur-md border border-accent-purple/40 text-accent-purple font-mono text-[0.62rem] font-black cursor-pointer flex items-center justify-center shadow-[0_4px_12px_rgba(189,90,247,0.1)] transition-all duration-300 relative rounded-full hover:bg-accent-purple hover:text-black hover:shadow-[0_0_15px_rgba(189,90,247,0.45)]"
         onClick={() => { isOpen ? close() : open(); }}
         aria-label={isOpen ? 'Close AI guide' : 'Open AI guide'}
@@ -134,19 +150,22 @@ export default function AIAssistant({ portfolioData }) {
       >
         <span className="ai-toggle-icon" aria-hidden="true">SYS</span>
         <span className="ai-pulse-ring absolute inset-0 rounded-full border-2 border-accent-purple/30 animate-ping" aria-hidden="true" />
-      </button>
+      </Button>
 
       <div className={`ai-panel absolute bottom-16 right-0 w-[340px] bg-[rgba(12,6,24,0.92)] backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300 ${isOpen ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95'}`}>
         <div className="ai-panel-header flex items-center justify-between px-4 py-3 border-b border-white/10">
           <span className="ai-panel-title font-mono text-xs text-accent-cyan">// SYS_AI GUIDE</span>
-          <div className="ai-header-controls flex gap-2">
-            <button
-              className="ai-voice-btn bg-none border-none text-sm cursor-pointer"
+          <div className="ai-header-controls flex gap-2 items-center">
+            <Button
+              variant="ghost"
+              className="ai-voice-btn bg-none border-none text-sm cursor-pointer p-1 min-h-0 w-auto"
               onClick={() => { setVoiceEnabled(!voiceEnabled); localStorage.setItem('setting-aivoice', !voiceEnabled); }}
               aria-label="Toggle voice output"
               title={voiceEnabled ? 'Mute AI voice output' : 'Enable AI voice output'}
-            >{voiceEnabled ? '🔊' : '🔇'}</button>
-            <button className="ai-close-btn bg-none border-none text-text-muted cursor-pointer hover:text-accent-pink" onClick={close} aria-label="Close AI guide">✕</button>
+            >
+              {voiceEnabled ? '🔊' : '🔇'}
+            </Button>
+            <Button variant="ghost" className="ai-close-btn bg-none border-none text-text-muted cursor-pointer hover:text-accent-pink p-1 min-h-0 w-auto" onClick={close} aria-label="Close AI guide">✕</Button>
           </div>
         </div>
 
@@ -168,11 +187,14 @@ export default function AIAssistant({ portfolioData }) {
 
         <div className="ai-suggestions-row flex flex-wrap gap-1.5 px-3 py-2 border-t border-white/5">
           {currentChips.map((text, i) => (
-            <button
+            <Button
               key={i}
-              className="ai-suggestion-chip text-[10px] font-mono px-2 py-1 bg-white/5 border border-white/10 rounded text-text-muted cursor-pointer hover:bg-accent-cyan/10 hover:text-accent-cyan transition-all"
-              onClick={() => { addMessage(text, 'user'); respond(text); bus.emit('audio:click'); }}
-            >{text}</button>
+              variant="ghost"
+              className="ai-suggestion-chip text-[10px] font-mono px-2 py-1 bg-white/5 border border-white/10 rounded text-text-muted cursor-pointer hover:bg-accent-cyan/10 hover:text-accent-cyan transition-all min-h-0 w-auto"
+              onClick={() => { addMessage(text, 'user'); respond(text); }}
+            >
+              {text}
+            </Button>
           ))}
         </div>
 
@@ -186,7 +208,7 @@ export default function AIAssistant({ portfolioData }) {
             onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
             aria-label="Ask the AI guide"
           />
-          <button className="ai-send-btn bg-accent-cyan/10 border border-accent-cyan/30 text-accent-cyan rounded px-2 py-1.5 text-xs cursor-pointer hover:bg-accent-cyan hover:text-black transition-all" onClick={handleSend} aria-label="Send message">→</button>
+          <Button variant="ghost" className="ai-send-btn bg-accent-cyan/10 border border-accent-cyan/30 text-accent-cyan rounded px-2 py-1.5 text-xs cursor-pointer hover:bg-accent-cyan hover:text-black transition-all min-h-0 w-auto" onClick={handleSend} aria-label="Send message">→</Button>
         </div>
       </div>
     </div>

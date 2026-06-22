@@ -1,16 +1,21 @@
 import React from 'react';
 import { bus } from '../contexts/EventBus.js';
+import Button from '../components/ui/Button.jsx';
 
 export default function ProjectsSection({ projects }) {
   return (
-    <section className="comic-chapter w-screen h-screen flex items-center justify-center px-[5%] pl-[10%] relative" id="sec-3" aria-label="Chapter 3 — Active Operations">
-      <div className="comic-page w-full max-w-[1100px] h-[82vh] relative flex flex-col justify-between">
+    <section className="comic-chapter" id="sec-3" aria-label="Chapter 3 — Active Operations">
+      <div className="comic-page">
+        {/* Chapter Header */}
         <div className="chapter-header border-b border-white/25 pb-3 mb-8 flex items-end gap-4 w-fit">
           <span className="chapter-index font-mono text-base text-accent-pink font-bold">CHAPTER 03 //</span>
           <h2 className="chapter-title font-display text-2xl font-black tracking-wide text-white uppercase">ACTIVE OPERATIONS</h2>
         </div>
-        <div className="projects-comic-grid grid grid-cols-[1fr_1.2fr] gap-10 h-[calc(100%-70px)]">
-          <div className="comic-panel cards-panel pane-left flex items-center px-14 py-[3.2rem] rounded-xl bg-[rgba(8,2,18,0.45)] backdrop-blur-md border border-accent-purple/30 shadow-cyber-purple transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5 hover:border-accent-purple/55 hover:shadow-[0_8px_32px_0_rgba(4,1,10,0.37),0_0_25px_rgba(189,90,247,0.25)]">
+
+        {/* Responsive Grid */}
+        <div className="projects-comic-grid">
+          {/* Mission Logs list panel */}
+          <div className="comic-panel cards-panel pane-left flex items-center px-8 md:px-14 py-8 md:py-12">
             <div className="panel-border-glow absolute top-0 left-0 w-full h-full border-2 border-transparent pointer-events-none z-[5] transition-all duration-300" />
             <div className="panel-content w-full h-full">
               <h3 className="panel-heading font-display text-2xl font-black uppercase tracking-wide mb-6">Mission <span className="text-accent-purple">Logs</span></h3>
@@ -23,7 +28,7 @@ export default function ProjectsSection({ projects }) {
                     tabIndex={0}
                     role="button"
                     aria-label={`Open ${p.title} details`}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bus.emit('modal:open', 'modal-projects'); }}}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bus.emit('modal:open', 'modal-projects'); bus.emit('audio:click'); }}}
                   >
                     <span className="row-num font-mono text-base text-accent-cyan font-bold">{p.index}</span>
                     <div className="row-info flex flex-col gap-1">
@@ -35,7 +40,9 @@ export default function ProjectsSection({ projects }) {
               </div>
             </div>
           </div>
-          <div className="comic-panel artwork-panel pane-right rounded-xl bg-cover bg-center transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5"
+
+          {/* Artwork panel */}
+          <div className="comic-panel artwork-panel pane-right rounded-xl bg-cover bg-center min-h-[300px]"
             style={{ backgroundImage: "url('assets/comic_projects.png')" }}>
             <div className="panel-border-glow absolute top-0 left-0 w-full h-full border-2 border-transparent pointer-events-none z-[5] transition-all duration-300" />
             <div className="panel-overlay-grad absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[rgba(4,1,10,0.85)] to-[rgba(4,1,10,0.1)] pointer-events-none z-[2]" />
@@ -44,11 +51,13 @@ export default function ProjectsSection({ projects }) {
               <p className="caption-body font-sans text-sm leading-tight font-medium">Inter-device communications, cloud marketing matrices, and optimized SEO databases.</p>
             </div>
             <div className="panel-action-overlay absolute bottom-8 left-1/2 -translate-x-1/2 z-[5]">
-              <button
-                className="comic-btn-premium border-glow inline-flex items-center justify-center gap-4 bg-accent-cyan/[0.05] backdrop-blur-sm text-accent-cyan border border-accent-cyan/40 px-9 py-4 font-mono text-xs font-bold tracking-widest cursor-pointer transition-all duration-300 shadow-[4px_4px_0_#00e5ff] w-fit uppercase hover:bg-accent-cyan hover:text-black hover:shadow-[0_0_20px_rgba(0,229,255,0.45)] hover:border-accent-cyan"
-                onClick={() => { bus.emit('modal:open', 'modal-projects'); bus.emit('audio:click'); }}
+              <Button
+                variant="primary"
+                onClick={() => { bus.emit('modal:open', 'modal-projects'); }}
                 aria-label="Open Projects Details"
-              >[ RUN MISSION TELEMETRY ]</button>
+              >
+                Run Mission Telemetry
+              </Button>
             </div>
           </div>
         </div>
@@ -56,3 +65,4 @@ export default function ProjectsSection({ projects }) {
     </section>
   );
 }
+

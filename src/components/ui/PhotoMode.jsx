@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../contexts/AppContext.jsx';
 import { bus } from '../../contexts/EventBus.js';
+import Button from './Button.jsx';
 
 export default function PhotoMode() {
   const { state, updateState } = useApp();
@@ -15,11 +16,15 @@ export default function PhotoMode() {
   if (!state.photoModeActive) return null;
 
   return (
-    <button
+    <Button
       id="photo-mode-exit-btn"
-      className="comic-btn-premium fixed top-4 right-4 z-[99999]"
+      variant="primary"
+      className="fixed top-4 right-4 z-[99999]"
       onClick={handleExit}
       aria-label="Exit Photo Mode"
-    >[ EXIT PHOTO MODE ]</button>
+    >
+      Exit Photo Mode
+    </Button>
   );
 }
+
